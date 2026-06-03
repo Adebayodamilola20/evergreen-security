@@ -191,18 +191,18 @@ export default function Home() {
             transition={{ duration: 0.8, ease: "easeOut" }}
             className="max-w-4xl text-left pl-0"
           >
-            <div className="inline-block bg-highlight/20 backdrop-blur-sm border border-highlight/30 text-highlight px-4 py-1.5 rounded-full text-xs sm:text-sm font-semibold mb-6 tracking-wider uppercase">
+            <div className="inline-block bg-white/15 backdrop-blur-sm border border-white/30 text-white px-4 py-1.5 rounded-full text-xs sm:text-sm font-semibold mb-6 tracking-wider uppercase">
               PROTON SECURITY SERVICES
             </div>
             <h1 className="text-4xl sm:text-5xl md:text-7xl font-bold mb-6 leading-tight tracking-tight max-w-3xl">
-              Your Safety Isn't <br />Just a Priority— <br />
-              <span className="text-highlight italic">It's Our Legacy in Motion.</span>
+              Your Safety Isn&apos;t <br />Just a Priority— <br />
+              <span className="text-white italic drop-shadow-lg">It&apos;s Our Legacy in Motion.</span>
             </h1>
-            <p className="text-lg md:text-2xl mb-10 max-w-2xl text-gray-200 leading-relaxed">
-              We don't just protect spaces, we secure futures. Bridging the gap between security, technology, and visionary protection.
+            <p className="text-lg md:text-2xl mb-10 max-w-2xl text-white leading-relaxed drop-shadow-md">
+              We don&apos;t just protect spaces, we secure futures. Bridging the gap between security, technology, and visionary protection.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-start">
-              <Link href="/contact" className="btn-highlight text-center text-lg px-8 py-4 rounded-full">
+              <Link href="/contact" className="inline-flex items-center justify-center bg-white text-navy hover:bg-white/90 text-center text-lg font-bold px-8 py-4 rounded-full transition-all duration-300 hover:scale-105">
                 Join Our Team
               </Link>
               <Link
@@ -234,8 +234,8 @@ export default function Home() {
                 transition={{ duration: 0.5, delay: index * 0.1 }}
                 className="p-4"
               >
-                <p className="text-3xl sm:text-5xl font-extrabold text-highlight mb-2">{item.stat}</p>
-                <p className="text-sm sm:text-lg text-white/80 font-medium">{item.label}</p>
+                <p className="text-3xl sm:text-5xl font-extrabold text-white mb-2">{item.stat}</p>
+                <p className="text-sm sm:text-lg text-white font-medium">{item.label}</p>
               </motion.div>
             ))}
           </div>
