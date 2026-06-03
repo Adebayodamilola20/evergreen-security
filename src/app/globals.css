@@ -3,24 +3,114 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+
+  /* Evergreen Custom Colors (HSL values) */
+  --primary: 142 70% 12%;
+  --primary-foreground: 0 0% 100%;
+  --accent: 142 65% 42%;
+  --accent-foreground: 0 0% 100%;
+  --highlight: 128 27% 16%;
+  --highlight-foreground: 0 0% 100%;
+  --border: 142 15% 88%;
+  --radius: 0.5rem;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-navy: hsl(var(--primary));
+  --color-navy-light: hsl(142 70% 20%);
+  --color-evergreen: hsl(142 70% 30%);
+  --color-evergreen-light: hsl(142 65% 50%);
+  --color-evergreen-dark: hsl(142 70% 8%);
+  --color-teal: hsl(var(--highlight));
+  --color-teal-light: hsl(175 75% 45%);
+  --color-primary: hsl(var(--primary));
+  --color-accent: hsl(var(--accent));
+  --color-highlight: hsl(var(--highlight));
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans), Arial, Helvetica, sans-serif;
 }
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* Custom utilities from Proton Security */
+.section-padding {
+  padding: 5rem 1rem;
+}
+@media (min-width: 768px) {
+  .section-padding {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+}
+
+.container-custom {
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 80rem;
+}
+
+.btn-highlight {
+  border-radius: var(--radius);
+  background-color: hsl(var(--highlight));
+  padding: 0.75rem 1.5rem;
+  font-weight: 600;
+  color: hsl(var(--highlight-foreground));
+  box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  transition-property: all;
+  transition-timing-function: cubic-bezier(.4,0,.2,1);
+  transition-duration: .3s;
+}
+
+.btn-highlight:hover {
+  transform: scale(1.05);
+  background-color: hsl(var(--highlight) / 0.9);
+  box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes zoomOut {
+  0% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.6s ease-out forwards;
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.8s ease-out forwards;
+}
+
+.animate-zoom-out {
+  animation: zoomOut 6s ease-out forwards;
+}
+
