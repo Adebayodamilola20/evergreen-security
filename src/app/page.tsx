@@ -64,21 +64,21 @@ const testimonials = [
 ];
 
 export default function Home() {
-  // Hero Carousel state
-  const [heroIndex, setHeroIndex] = useState(0);
-  const heroImages = [
-    "/assets/IMG_2209-DzMGkYV8.jpg",
-    "/assets/IMG_2208-4pFdTGct.jpg",
-    "/assets/IMG_2171-Dy9n0K0G.jpg",
-    "/assets/IMG_2232-D8S3-a-x.jpg"
-  ];
+  // Hero Carousel state (commented out — using single static image)
+  // const [heroIndex, setHeroIndex] = useState(0);
+  // const heroImages = [
+  //   "/assets/IMG_2209-DzMGkYV8.jpg",
+  //   "/assets/IMG_2208-4pFdTGct.jpg",
+  //   "/assets/IMG_2171-Dy9n0K0G.jpg",
+  //   "/assets/IMG_2232-D8S3-a-x.jpg"
+  // ];
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setHeroIndex((prev) => (prev + 1) % heroImages.length);
-    }, 5000);
-    return () => clearInterval(interval);
-  }, [heroImages.length]);
+  // useEffect(() => {
+  //   const interval = setInterval(() => {
+  //     setHeroIndex((prev) => (prev + 1) % heroImages.length);
+  //   }, 5000);
+  //   return () => clearInterval(interval);
+  // }, [heroImages.length]);
 
   // Chatbot state
   const [chatOpen, setChatOpen] = useState(false);
@@ -167,20 +167,13 @@ export default function Home() {
       {/* 1. Hero Carousel Section */}
       <section className="relative min-h-[90vh] md:min-h-screen flex items-center justify-start overflow-hidden py-20 md:py-0">
         <div className="absolute inset-0 z-0">
-          {heroImages.map((src, index) => (
-            <div
-              key={src}
-              className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${
-                index === heroIndex ? "opacity-100" : "opacity-0"
-              }`}
-            >
-              <img
-                src={src}
-                alt={`Proton Security Hero ${index + 1}`}
-                className={`w-full h-full object-cover ${index === heroIndex ? "animate-zoom-out" : ""}`}
-              />
-            </div>
-          ))}
+          <div className="absolute inset-0">
+            <img
+              src="/assets/jonney .jpg"
+              alt="Hero background"
+              className="w-full h-full object-cover"
+            />
+          </div>
           <div className="absolute inset-0 bg-black/40 z-10" />
         </div>
 
@@ -191,9 +184,6 @@ export default function Home() {
             transition={{ duration: 0.8, ease: "easeOut" }}
             className="max-w-4xl text-left pl-0"
           >
-            <div className="inline-block bg-white/15 backdrop-blur-sm border border-white/30 text-white px-4 py-1.5 rounded-full text-xs sm:text-sm font-semibold mb-6 tracking-wider uppercase">
-              PROTON SECURITY SERVICES
-            </div>
             <h1 className="text-4xl sm:text-5xl md:text-7xl font-bold mb-6 leading-tight tracking-tight max-w-3xl">
               Your Safety Isn&apos;t <br />Just a Priority— <br />
               <span className="text-white italic drop-shadow-lg">It&apos;s Our Legacy in Motion.</span>
@@ -481,12 +471,11 @@ export default function Home() {
               className="relative rounded-2xl overflow-hidden shadow-2xl h-[300px] sm:h-[400px] border border-white/5"
             >
               <img
-                src="/assets/IMG_2208-4pFdTGct.jpg"
+                src="/assets/bingi3.jpg"
                 alt="Security Training"
                 className="w-full h-full object-cover"
                 loading="lazy"
               />
-              <div className="absolute inset-0 bg-black/35" />
             </motion.div>
 
             <motion.div
@@ -556,12 +545,10 @@ export default function Home() {
               >
                 <Link href={`/executive-staff/${director.slug}`} className="group block h-full">
                   <div className="bg-white rounded-2xl overflow-hidden shadow-md group-hover:shadow-xl transition-all duration-300 group-hover:scale-105 border border-gray-100 flex flex-col h-full">
-                    <div className="relative h-64 overflow-hidden bg-navy">
-                      <img
-                        src={director.images[0]}
-                        alt={director.name}
-                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                      />
+                    <div className="relative h-64 overflow-hidden bg-navy flex items-center justify-center">
+                      <span className="text-7xl font-bold text-white/10 select-none">
+                        {director.name.split(" ").map((n: string) => n[0]).filter(Boolean).join("")}
+                      </span>
                       <div className="absolute inset-0 bg-gradient-to-t from-primary/90 via-primary/40 to-transparent" />
                       <div className="absolute bottom-0 left-0 right-0 p-6 text-white z-10">
                         <h3 className="text-xl font-bold leading-tight mb-1 group-hover:text-highlight transition-colors">

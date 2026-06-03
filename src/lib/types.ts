@@ -40,6 +40,18 @@ export interface Testimonial {
 export interface NavLink {
   label: string;
   href: string;
+  children?: NavLink[];
+}
+
+export interface BlogPost {
+  slug: string;
+  title: string;
+  date: string;
+  category: string;
+  excerpt: string;
+  image: string;
+  imageAlt: string;
+  content: string[];
 }
 
 export interface SocialMediaPlatform {

@@ -7,40 +7,32 @@ import CTASection from "@/components/CTASection";
 export default function GalleryPage() {
   const galleryImages = [
     {
-      src: "/assets/bingo.jpg",
+      src: "/assets/binji2.jpg",
       alt: "Security team in action",
     },
     {
-      src: "/assets/bingo2.jpg",
+      src: "/assets/bing4.jpg",
       alt: "Executive protection detail",
     },
     {
-      src: "/assets/bingo3.jpg",
+      src: "/assets/bingi.jpg",
       alt: "Airport security operations",
     },
     {
-      src: "/assets/bingo4.jpg",
+      src: "/assets/bingi5.jpg",
       alt: "Corporate security patrol",
     },
     {
-      src: "/assets/bingo5.jpg",
+      src: "/assets/bingo.jpg",
       alt: "CCTV monitoring center",
     },
     {
-      src: "/assets/bingo6.jpg",
+      src: "/assets/bingo2.jpg",
       alt: "Access control system",
     },
     {
-      src: "/assets/bingo7.jpg",
+      src: "/assets/bingo3.jpg",
       alt: "Security training exercise",
-    },
-    {
-      src: "/assets/IMG_2193-DHWupqjw.jpg",
-      alt: "Event security management",
-    },
-    {
-      src: "/assets/IMG_2192-DwePMzJV.jpg",
-      alt: "Risk assessment team",
     },
   ];
 

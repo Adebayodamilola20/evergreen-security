@@ -8,7 +8,7 @@ import { NavLink } from "@/lib/types";
 
 const navLinks: NavLink[] = [
   { label: "Home", href: "/" },
-  { label: "About Us", href: "/about" },
+  { label: "About Us", href: "/about", children: [{ label: "Our Blog", href: "/blog" }] },
   { label: "Services", href: "/services" },
   { label: "Training", href: "/training" },
   { label: "Gallery", href: "/gallery" },
@@ -30,10 +30,6 @@ export default function Header() {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
-
-  useEffect(() => {
-    setMobileOpen(false);
-  }, [pathname]);
 
   return (
     <header
@@ -60,23 +56,54 @@ export default function Header() {
           </Link>
 
           <nav className="hidden lg:flex items-center gap-0.5">
-            {navLinks.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className={`px-2 py-1.5 text-xs font-medium rounded-md transition-all duration-200 whitespace-nowrap ${
-                  pathname === link.href
-                    ? scrolled
-                      ? "text-evergreen bg-evergreen/10"
-                      : "text-white bg-white/20"
-                    : scrolled
-                    ? "text-gray-600 hover:text-evergreen hover:bg-evergreen/5"
-                    : "text-white/80 hover:text-white hover:bg-white/10"
-                }`}
-              >
-                {link.label}
-              </Link>
-            ))}
+            {navLinks.map((link) => {
+              const active =
+                pathname === link.href ||
+                link.children?.some((child) => pathname === child.href || pathname.startsWith(`${child.href}/`));
+              const linkClassName = `px-2 py-1.5 text-xs font-medium rounded-md transition-all duration-200 whitespace-nowrap ${
+                active
+                  ? scrolled
+                    ? "text-evergreen bg-evergreen/10"
+                    : "text-white bg-white/20"
+                  : scrolled
+                  ? "text-gray-600 hover:text-evergreen hover:bg-evergreen/5"
+                  : "text-white/80 hover:text-white hover:bg-white/10"
+              }`;
+
+              if (!link.children) {
+                return (
+                  <Link key={link.href} href={link.href} className={linkClassName}>
+                    {link.label}
+                  </Link>
+                );
+              }
+
+              return (
+                <div key={link.href} className="relative group">
+                  <Link href={link.href} className={`${linkClassName} inline-flex items-center gap-1`}>
+                    {link.label}
+                    <svg className="h-3 w-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="m6 9 6 6 6-6" />
+                    </svg>
+                  </Link>
+                  <div className="invisible absolute left-0 top-full z-50 mt-2 w-44 rounded-lg border border-gray-100 bg-white p-2 opacity-0 shadow-xl transition-all duration-200 group-hover:visible group-hover:opacity-100 group-focus-within:visible group-focus-within:opacity-100">
+                    {link.children.map((child) => (
+                      <Link
+                        key={child.href}
+                        href={child.href}
+                        className={`block rounded-md px-3 py-2 text-sm font-medium transition-colors ${
+                          pathname === child.href || pathname.startsWith(`${child.href}/`)
+                            ? "bg-evergreen/10 text-evergreen"
+                            : "text-gray-700 hover:bg-evergreen/5 hover:text-evergreen"
+                        }`}
+                      >
+                        {child.label}
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              );
+            })}
           </nav>
 
           <button
@@ -107,19 +134,43 @@ export default function Header() {
             className="lg:hidden bg-white border-t border-gray-100 shadow-2xl overflow-hidden"
           >
             <nav className="max-w-7xl mx-auto px-4 py-4 space-y-1">
-              {navLinks.map((link) => (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  className={`block px-4 py-3 rounded-lg text-sm font-medium transition-all ${
-                    pathname === link.href
-                      ? "text-evergreen bg-evergreen/10"
-                      : "text-gray-700 hover:text-evergreen hover:bg-evergreen/5"
-                  }`}
-                >
-                  {link.label}
-                </Link>
-              ))}
+              {navLinks.map((link) => {
+                const active =
+                  pathname === link.href ||
+                  link.children?.some((child) => pathname === child.href || pathname.startsWith(`${child.href}/`));
+
+                return (
+                  <div key={link.href}>
+                    <Link
+                      href={link.href}
+                      onClick={() => setMobileOpen(false)}
+                      className={`block px-4 py-3 rounded-lg text-sm font-medium transition-all ${
+                        active ? "text-evergreen bg-evergreen/10" : "text-gray-700 hover:text-evergreen hover:bg-evergreen/5"
+                      }`}
+                    >
+                      {link.label}
+                    </Link>
+                    {link.children && (
+                      <div className="mt-1 space-y-1 pl-4">
+                        {link.children.map((child) => (
+                          <Link
+                            key={child.href}
+                            href={child.href}
+                            onClick={() => setMobileOpen(false)}
+                            className={`block rounded-lg px-4 py-2 text-sm font-medium transition-all ${
+                              pathname === child.href || pathname.startsWith(`${child.href}/`)
+                                ? "text-evergreen bg-evergreen/10"
+                                : "text-gray-600 hover:text-evergreen hover:bg-evergreen/5"
+                            }`}
+                          >
+                            {child.label}
+                          </Link>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
             </nav>
           </motion.div>
         )}

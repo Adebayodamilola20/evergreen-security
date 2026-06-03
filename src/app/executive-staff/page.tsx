@@ -130,12 +130,10 @@ export default function ExecutiveStaffPage() {
                   transition={{ duration: 0.6, delay: index * 0.1 }}
                 >
                   <Link href={`/executive-staff/${director.slug}`} className="group block">
-                    <div className="relative rounded-2xl overflow-hidden shadow-md group-hover:shadow-2xl border border-gray-100 transition-all duration-300 hover:scale-105 h-96">
-                      <img
-                        src={director.images[0]}
-                        alt={director.name}
-                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                      />
+                    <div className="relative rounded-2xl overflow-hidden shadow-md group-hover:shadow-2xl border border-gray-100 transition-all duration-300 hover:scale-105 h-96 flex items-center justify-center bg-navy">
+                      <span className="text-8xl font-bold text-white/10 select-none">
+                        {director.name.split(" ").map((n: string) => n[0]).filter(Boolean).join("")}
+                      </span>
                       <div className="absolute inset-0 bg-gradient-to-t from-primary via-primary/50 to-transparent opacity-90" />
                       <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
                         <h3 className="text-2xl font-bold mb-1 group-hover:text-highlight transition-colors duration-300">
@@ -181,12 +179,10 @@ export default function ExecutiveStaffPage() {
                     transition={{ duration: 0.6, delay: index * 0.1 }}
                   >
                     <Link href={`/executive-staff/${manager.slug}`} className="group block">
-                      <div className="relative rounded-2xl overflow-hidden shadow-md group-hover:shadow-2xl border border-gray-100 transition-all duration-300 hover:scale-105 h-96">
-                        <img
-                          src={manager.images[0]}
-                          alt={manager.name}
-                          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                        />
+                      <div className="relative rounded-2xl overflow-hidden shadow-md group-hover:shadow-2xl border border-gray-100 transition-all duration-300 hover:scale-105 h-96 flex items-center justify-center bg-navy">
+                        <span className="text-8xl font-bold text-white/10 select-none">
+                          {manager.name.split(" ").map((n: string) => n[0]).filter(Boolean).join("")}
+                        </span>
                         <div className="absolute inset-0 bg-gradient-to-t from-primary via-primary/50 to-transparent opacity-90" />
                         <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
                           <h3 className="text-2xl font-bold mb-1 group-hover:text-highlight transition-colors duration-300">
