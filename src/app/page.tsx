@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import { executives } from "@/lib/executives";
 
-// Service list from Proton Security
+// Service list from Evergreen Security
 const servicesData = [
   {
     id: "corporate-security",
@@ -44,7 +44,7 @@ const testimonials = [
   {
     author: "CHI Limited",
     initials: "JM",
-    quote: "Proton Security transformed our corporate security infrastructure. Their professionalism and expertise are unmatched. Highly recommended!"
+    quote: "Evergreen Security transformed our corporate security infrastructure. Their professionalism and expertise are unmatched. Highly recommended!"
   },
   {
     author: "MTN Nigeria",
@@ -94,7 +94,7 @@ export default function Home() {
       setMessages([
         {
           id: 1,
-          text: "Hello! I'm the Proton Security AI assistant. How can I help you with our services, training, or staff details today?",
+          text: "Hello! I'm the Evergreen Security AI assistant. How can I help you with our services, training, or staff details today?",
           sender: "ai"
         }
       ]);
@@ -134,7 +134,7 @@ export default function Home() {
       if (lower.includes("address") || lower.includes("location") || lower.includes("where")) {
         response = "🏢 **Our Address**:\n10 Jibowo Street, Yaba, Lagos, Nigeria.";
       } else if (lower.includes("email") || lower.includes("mail") || lower.includes("contact")) {
-        response = "✉️ **Email Us**:\ninfo@protonsecurity.com / operations@protonsecurity.com";
+        response = "✉️ **Email Us**:\ninfo@evergreensecurity.com / operations@evergreensecurity.com";
       } else if (lower.includes("phone") || lower.includes("call") || lower.includes("number") || lower.includes("phone number")) {
         response = "📞 **Phone Contacts**:\n+234 803 202 3600\n+234 805 120 4500";
       } else if (lower.includes("service") || lower.includes("offer") || lower.includes("what do you do")) {
@@ -144,7 +144,7 @@ export default function Home() {
       } else if (lower.includes("director") || lower.includes("board") || lower.includes("staff") || lower.includes("manager") || lower.includes("who is")) {
         response = "👥 **Executive Staff & Board**:\nOur Board of Directors is led by **AYODEJI BAMGBOSE (Chairman)**. The operations and management team includes **Prince Adekunmi Odebunmi (Managing Director)**, **Dr. Olumide Olayinka (Director of Admin & Finance)**, and **Olabisi Familusi (Director of Business Development)**. You can view their full profiles on our Executive Staff page!";
       } else {
-        response = "Thank you for reaching out to Proton Security support. Our team is dedicated to providing visionary protection and world-class training. Is there anything specific you would like to know about our armed guard deployments or security assessments?";
+        response = "Thank you for reaching out to Evergreen Security support. Our team is dedicated to providing visionary protection and world-class training. Is there anything specific you would like to know about our armed guard deployments or security assessments?";
       }
 
       setMessages((prev) => [...prev, { id: Date.now() + 1, text: response, sender: "ai" }]);
@@ -156,7 +156,7 @@ export default function Home() {
     setMessages([
       {
         id: Date.now(),
-        text: "Hello! I'm the Proton Security AI assistant. How can I help you with our services, training, or staff details today?",
+        text: "Hello! I'm the Evergreen Security AI assistant. How can I help you with our services, training, or staff details today?",
         sender: "ai"
       }
     ]);
@@ -249,7 +249,7 @@ export default function Home() {
                 Setting the Standard in Security Excellence
               </h2>
               <p className="text-lg text-gray-700 mb-6 leading-relaxed">
-                Proton Security is a premier provider of comprehensive security solutions, combining cutting-edge technology with decades of expertise to deliver unparalleled protection for businesses and organizations worldwide.
+                Evergreen Security is a premier provider of comprehensive security solutions, combining cutting-edge technology with decades of expertise to deliver unparalleled protection for businesses and organizations worldwide.
               </p>
               <p className="text-gray-600 mb-8 leading-relaxed">
                 Our team of certified professionals brings together military, law enforcement, and corporate security experience to create customized solutions that address your unique security challenges.
@@ -586,7 +586,7 @@ export default function Home() {
                     🛡️
                   </div>
                   <div>
-                    <h4 className="font-bold text-sm">Proton Assistant</h4>
+                    <h4 className="font-bold text-sm">Evergreen Assistant</h4>
                     <p className="text-[10px] text-highlight font-semibold flex items-center gap-1">
                       <span className="w-1.5 h-1.5 bg-green-400 rounded-full animate-pulse" />
                       Online • AI Assistant

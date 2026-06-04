@@ -84,8 +84,8 @@ export const executives: Executive[] = [
     slug: "kayode-bamgbose",
     name: "Kayode Felix Bamgbose",
     role: "Operational Manager",
-    bio: "Kayode Felix Bamgbose is a dedicated Operational Manager at Proton Security, overseeing the day-to-day security operations.",
-    fullBio: "Kayode Felix Bamgbose is a dedicated Operational Manager at Proton Security, overseeing the day-to-day security operations and ensuring the highest standards of safety and efficiency. With his extensive background in operational management, he leads our field teams with precision and strategic focus.",
+    bio: "Kayode Felix Bamgbose is a dedicated Operational Manager at Evergreen Security, overseeing the day-to-day security operations.",
+    fullBio: "Kayode Felix Bamgbose is a dedicated Operational Manager at Evergreen Security, overseeing the day-to-day security operations and ensuring the highest standards of safety and efficiency. With his extensive background in operational management, he leads our field teams with precision and strategic focus.",
     credentials: [
       "Expert in operational security management",
       "Lead coordinator for large-scale security deployments",

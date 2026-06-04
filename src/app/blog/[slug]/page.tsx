@@ -1,5 +1,4 @@
 import Link from "next/link";
-import Image from "next/image";
 import { notFound } from "next/navigation";
 import { blogPosts, getBlogPost } from "@/lib/blog";
 
@@ -35,9 +34,7 @@ export default async function BlogPostPage({
       </section>
 
       <div className="container-custom px-4 py-12">
-        <div className="relative h-[320px] overflow-hidden rounded-lg bg-gray-100 md:h-[520px]">
-          <Image src={post.image} alt={post.imageAlt} fill sizes="100vw" className="object-cover" priority />
-        </div>
+        <div className="relative h-[320px] overflow-hidden rounded-lg bg-white md:h-[520px]"></div>
 
         <div className="mx-auto mt-12 max-w-3xl space-y-6 text-lg leading-8 text-gray-700">
           {post.content.map((paragraph) => (

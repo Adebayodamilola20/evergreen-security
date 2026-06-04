@@ -1,5 +1,4 @@
 import Link from "next/link";
-import Image from "next/image";
 import { blogPosts } from "@/lib/blog";
 
 export default function BlogPage() {
@@ -24,15 +23,7 @@ export default function BlogPage() {
                 href={`/blog/${post.slug}`}
                 className="group overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
               >
-                <div className="relative aspect-[4/3] overflow-hidden bg-gray-100">
-                  <Image
-                    src={post.image}
-                    alt={post.imageAlt}
-                    fill
-                    sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
-                    className="object-cover transition-transform duration-500 group-hover:scale-105"
-                  />
-                </div>
+                <div className="relative aspect-[4/3] overflow-hidden bg-white"></div>
                 <div className="p-6">
                   <div className="mb-4 flex items-center justify-between gap-4 text-xs font-semibold uppercase tracking-wide">
                     <span className="text-evergreen">{post.category}</span>

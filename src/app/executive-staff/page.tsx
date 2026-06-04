@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import { executives } from "@/lib/executives";
 
-// Board of Directors names from Proton Security
+// Board of Directors names from Evergreen Security
 const boardOfDirectors = [
   "AYODEJI BAMGBOSE (Chairman)",
   "IBRAHIM MUUTA",
