@@ -88,18 +88,12 @@ export default function Home() {
   const [isTyping, setIsTyping] = useState(false);
   const chatEndRef = useRef<HTMLDivElement>(null);
 
-  // Initialize chat
-  useEffect(() => {
-    if (messages.length === 0) {
-      setMessages([
-        {
-          id: 1,
-          text: "Hello! I'm the Evergreen Security AI assistant. How can I help you with our services, training, or staff details today?",
-          sender: "ai"
-        }
-      ]);
-    }
-  }, [messages.length]);
+  // Lead capture — the visitor must submit their details before chatting
+  const [leadSubmitted, setLeadSubmitted] = useState(false);
+  const [leadName, setLeadName] = useState("");
+  const [leadEmail, setLeadEmail] = useState("");
+  const [leadPhone, setLeadPhone] = useState("");
+  const [leadError, setLeadError] = useState("");
 
   // Scroll to bottom of chat
   useEffect(() => {
@@ -118,45 +112,85 @@ export default function Home() {
     };
   }, []);
 
-  const handleSendMessage = () => {
+  const handleSendMessage = async () => {
     if (!inputValue.trim() || isTyping) return;
 
     const userMsg = inputValue.trim();
-    setMessages((prev) => [...prev, { id: Date.now(), text: userMsg, sender: "user" }]);
+    const userMessage = { id: Date.now(), text: userMsg, sender: "user" as const };
+    const history = [...messages, userMessage];
+    setMessages(history);
     setInputValue("");
     setIsTyping(true);
 
-    // Simulated local AI chatbot logic
-    setTimeout(() => {
-      const lower = userMsg.toLowerCase();
-      let response = "";
-
-      if (lower.includes("address") || lower.includes("location") || lower.includes("where")) {
-        response = "🏢 **Our Address**:\n10 Jibowo Street, Yaba, Lagos, Nigeria.";
-      } else if (lower.includes("email") || lower.includes("mail") || lower.includes("contact")) {
-        response = "✉️ **Email Us**:\ninfo@evergreensecurity.com / operations@evergreensecurity.com";
-      } else if (lower.includes("phone") || lower.includes("call") || lower.includes("number") || lower.includes("phone number")) {
-        response = "📞 **Phone Contacts**:\n+234 803 202 3600\n+234 805 120 4500";
-      } else if (lower.includes("service") || lower.includes("offer") || lower.includes("what do you do")) {
-        response = "🛡️ **Our Premier Services**:\n• **Corporate Security Solutions**\n• **Security Training & Development**\n• **Physical Security Services**\n• **Surveillance & Monitoring**\n• **Security Consulting**";
-      } else if (lower.includes("training") || lower.includes("course") || lower.includes("class")) {
-        response = "🎓 **Security Training Programs**:\n• **Basic Security Guard Training** (2 weeks)\n• **Advanced Tactical Operations** (4 weeks)\n• **Crisis Management & First Aid** (1 week)\n• **Executive Protection Specialist** (6 weeks)";
-      } else if (lower.includes("director") || lower.includes("board") || lower.includes("staff") || lower.includes("manager") || lower.includes("who is")) {
-        response = "👥 **Executive Staff & Board**:\nOur Board of Directors is led by **AYODEJI BAMGBOSE (Chairman)**. The operations and management team includes **Prince Adekunmi Odebunmi (Managing Director)**, **Dr. Olumide Olayinka (Director of Admin & Finance)**, and **Olabisi Familusi (Director of Business Development)**. You can view their full profiles on our Executive Staff page!";
-      } else {
-        response = "Thank you for reaching out to Evergreen Security support. Our team is dedicated to providing visionary protection and world-class training. Is there anything specific you would like to know about our armed guard deployments or security assessments?";
-      }
-
-      setMessages((prev) => [...prev, { id: Date.now() + 1, text: response, sender: "ai" }]);
+    try {
+      const res = await fetch("/api/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          lead: {
+            fullName: leadName.trim(),
+            email: leadEmail.trim(),
+            phone: leadPhone.trim(),
+          },
+          messages: history.map((m) => ({
+            role: m.sender === "user" ? "user" : "assistant",
+            content: m.text,
+          })),
+        }),
+      });
+      const data = await res.json();
+      const reply =
+        data.reply || data.error || "Sorry, something went wrong. Please try again.";
+      setMessages((prev) => [...prev, { id: Date.now() + 1, text: reply, sender: "ai" }]);
+    } catch {
+      setMessages((prev) => [
+        ...prev,
+        {
+          id: Date.now() + 1,
+          text: "🔌 Connection error. Please check your network and try again.",
+          sender: "ai",
+        },
+      ]);
+    } finally {
       setIsTyping(false);
-    }, 1200);
+    }
   };
 
   const clearChat = () => {
+    const name = leadName.trim() || "there";
     setMessages([
       {
         id: Date.now(),
-        text: "Hello! I'm the Evergreen Security AI assistant. How can I help you with our services, training, or staff details today?",
+        text: `Hello ${name}, good day to you! 👋 How may I help you with our services, training, or staff details today?`,
+        sender: "ai"
+      }
+    ]);
+  };
+
+  // Handle the contact form the visitor fills in before chatting
+  const handleSubmitLead = (e: React.FormEvent) => {
+    e.preventDefault();
+    const name = leadName.trim();
+    const email = leadEmail.trim();
+    const phone = leadPhone.trim();
+
+    if (!name || !email || !phone) {
+      setLeadError("Please fill in your full name, email, and phone number.");
+      return;
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      setLeadError("Please enter a valid email address.");
+      return;
+    }
+
+    setLeadError("");
+    setLeadSubmitted(true);
+
+    // The assistant's first message greets the visitor by the name they entered
+    setMessages([
+      {
+        id: Date.now(),
+        text: `Hello ${name}, good day to you! 👋 Welcome to Evergreen Security. How may I be of help today?`,
         sender: "ai"
       }
     ]);
@@ -614,6 +648,55 @@ export default function Home() {
                 </div>
               </div>
 
+              {!leadSubmitted ? (
+                /* Lead-capture form — the visitor must submit this before chatting */
+                <form onSubmit={handleSubmitLead} className="flex-1 overflow-y-auto p-4 flex flex-col gap-3">
+                  <p className="text-sm text-gray-600">
+                    Please share your details to start chatting with our assistant.
+                  </p>
+                  <div className="flex flex-col gap-1">
+                    <label htmlFor="lead-name" className="text-xs font-semibold text-primary">Full name</label>
+                    <input
+                      id="lead-name"
+                      type="text"
+                      value={leadName}
+                      onChange={(e) => setLeadName(e.target.value)}
+                      placeholder="Jane Doe"
+                      className="border border-gray-300 rounded-xl px-3 py-2 text-sm text-gray-700 bg-gray-50 focus:outline-none focus:ring-1 focus:ring-accent focus:border-accent"
+                    />
+                  </div>
+                  <div className="flex flex-col gap-1">
+                    <label htmlFor="lead-email" className="text-xs font-semibold text-primary">Email</label>
+                    <input
+                      id="lead-email"
+                      type="email"
+                      value={leadEmail}
+                      onChange={(e) => setLeadEmail(e.target.value)}
+                      placeholder="jane@example.com"
+                      className="border border-gray-300 rounded-xl px-3 py-2 text-sm text-gray-700 bg-gray-50 focus:outline-none focus:ring-1 focus:ring-accent focus:border-accent"
+                    />
+                  </div>
+                  <div className="flex flex-col gap-1">
+                    <label htmlFor="lead-phone" className="text-xs font-semibold text-primary">Phone number</label>
+                    <input
+                      id="lead-phone"
+                      type="tel"
+                      value={leadPhone}
+                      onChange={(e) => setLeadPhone(e.target.value)}
+                      placeholder="+234 803 000 0000"
+                      className="border border-gray-300 rounded-xl px-3 py-2 text-sm text-gray-700 bg-gray-50 focus:outline-none focus:ring-1 focus:ring-accent focus:border-accent"
+                    />
+                  </div>
+                  {leadError && <p className="text-xs text-red-500">{leadError}</p>}
+                  <button
+                    type="submit"
+                    className="mt-1 bg-accent text-white rounded-xl px-4 py-2.5 text-sm font-semibold hover:bg-accent/90 transition-colors"
+                  >
+                    Submit &amp; start chat
+                  </button>
+                </form>
+              ) : (
+                <>
               {/* Message List */}
               <div className="flex-1 overflow-y-auto p-4 space-y-4" ref={chatEndRef}>
                 {messages.map((msg) => (
@@ -666,6 +749,8 @@ export default function Home() {
                   </svg>
                 </button>
               </div>
+                </>
+              )}
             </motion.div>
           )}
         </AnimatePresence>
