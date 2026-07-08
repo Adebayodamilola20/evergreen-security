@@ -10,10 +10,8 @@ export default function IntroExperience({
 }) {
   // Show the intro on every load / reload.
   const [showIntro, setShowIntro] = useState(true);
-  const [muted, setMuted] = useState(true);
-  // True when the browser blocked muted autoplay (common on iOS) and the
-  // user needs to tap to start the video instead of seeing a black box.
-  const [needsTap, setNeedsTap] = useState(false);
+  // Video hasn't been started yet — show the poster + play button.
+  const [started, setStarted] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
 
   // Lock body scroll while the intro is on screen.
@@ -27,41 +25,20 @@ export default function IntroExperience({
     }
   }, [showIntro]);
 
-  // Kick off playback once the element is mounted. React does not reliably set
-  // the `muted` attribute on <video>, so iOS treats it as unmuted and blocks
-  // autoplay — set it imperatively here, then start playback. If the browser
-  // still refuses, surface a tap-to-play button instead of a black box.
-  useEffect(() => {
-    if (!showIntro) return;
-    const video = videoRef.current;
-    if (!video) return;
-    video.muted = true;
-    const attempt = video.play();
-    if (attempt) {
-      attempt.then(() => setNeedsTap(false)).catch(() => setNeedsTap(true));
-    }
-  }, [showIntro]);
-
   const dismiss = () => {
     videoRef.current?.pause();
     setShowIntro(false);
   };
 
-  // Start playback from a user tap (satisfies autoplay policies) with sound on.
+  // Single tap → play from the start WITH sound. A user gesture satisfies every
+  // browser's autoplay policy, so audio is allowed immediately (no separate
+  // "tap for sound" step).
   const play = () => {
     const video = videoRef.current;
     if (!video) return;
     video.muted = false;
-    setMuted(false);
-    setNeedsTap(false);
-    void video.play().catch(() => {});
-  };
-
-  const unmute = () => {
-    const video = videoRef.current;
-    if (!video) return;
-    video.muted = false;
-    setMuted(false);
+    video.currentTime = 0;
+    setStarted(true);
     void video.play().catch(() => {});
   };
 
@@ -106,21 +83,19 @@ export default function IntroExperience({
                 className="max-h-[78vh] w-full bg-black object-contain"
                 src="/media/evergreen_commercial_v2.mp4"
                 poster="/media/evergreen_commercial_poster.jpg"
-                autoPlay
-                muted
                 playsInline
                 controls
                 preload="auto"
                 onEnded={dismiss}
               />
 
-              {/* Autoplay was blocked (typical on iOS) — offer a big tap target
-                  over the poster instead of leaving a dead black frame. */}
-              {needsTap && (
+              {/* One tap over the poster starts the video from the beginning
+                  with sound. Hidden once playback has begun. */}
+              {!started && (
                 <button
                   type="button"
                   onClick={play}
-                  aria-label="Play introduction video"
+                  aria-label="Play introduction video with sound"
                   className="absolute inset-0 flex items-center justify-center bg-black/30 focus:outline-none"
                 >
                   <span className="flex h-20 w-20 items-center justify-center rounded-full bg-white/90 text-black shadow-2xl transition hover:bg-white">
@@ -135,32 +110,6 @@ export default function IntroExperience({
                       <polygon points="6 4 20 12 6 20 6 4" />
                     </svg>
                   </span>
-                </button>
-              )}
-
-              {!needsTap && muted && (
-                <button
-                  type="button"
-                  onClick={unmute}
-                  className="absolute bottom-4 left-1/2 flex -translate-x-1/2 items-center gap-2 rounded-full bg-white/90 px-4 py-2 text-sm font-medium text-black shadow-lg transition hover:bg-white focus:outline-none focus-visible:ring-2 focus-visible:ring-white"
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="18"
-                    height="18"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    aria-hidden="true"
-                  >
-                    <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
-                    <path d="M15.54 8.46a5 5 0 0 1 0 7.07" />
-                    <path d="M19.07 4.93a10 10 0 0 1 0 14.14" />
-                  </svg>
-                  Tap for sound
                 </button>
               )}
 
