@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { EASE } from "@/components/motion/ease";
 
 interface ServiceCardProps {
   title: string;
@@ -13,11 +14,11 @@ interface ServiceCardProps {
 export default function ServiceCard({ title, description, benefits, useCases, index = 0 }: ServiceCardProps) {
   return (
     <motion.div
-      initial={{ opacity: 0, y: 30 }}
+      initial={{ opacity: 0, y: 56 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.5, delay: index * 0.1 }}
-      className="bg-white rounded-xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 group"
+      viewport={{ once: true, margin: "-10%" }}
+      transition={{ duration: 0.85, delay: (index % 3) * 0.12, ease: EASE }}
+      className="bg-white rounded-xl p-8 shadow-lg hover:shadow-xl hover:-translate-y-2 transition-all duration-300 border border-gray-100 group"
     >
       <div className="flex items-center gap-4 mb-6">
         <div

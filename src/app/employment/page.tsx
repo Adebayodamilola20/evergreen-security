@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
+import MaskText from "@/components/motion/MaskText";
+import { EASE } from "@/components/motion/ease";
 
   const states: string[] = [
     "Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado", "Connecticut",
@@ -30,21 +32,16 @@ export default function EmploymentPage() {
             <div className="absolute top-0 right-0 w-96 h-96 bg-evergreen rounded-full blur-3xl" />
           </div>
           <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <motion.h1
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-              className="text-5xl md:text-6xl font-bold text-white tracking-tight"
-            >
-              Employment Application
-            </motion.h1>
+            <h1 className="text-5xl md:text-6xl font-bold text-white tracking-tight">
+            <MaskText text="Employment Application" />
+          </h1>
           </div>
         </section>
         <section className="py-20 bg-gray-50 min-h-[60vh] flex items-center justify-center">
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.5 }}
+            transition={{ duration: 0.85, ease: EASE }}
             className="text-center max-w-lg mx-auto px-4"
           >
             <div className="w-20 h-20 bg-evergreen/10 rounded-full flex items-center justify-center mx-auto mb-8">
@@ -69,26 +66,21 @@ export default function EmploymentPage() {
           <div className="absolute top-0 right-0 w-96 h-96 bg-evergreen rounded-full blur-3xl" />
         </div>
         <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <motion.h1
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="text-5xl md:text-6xl font-bold text-white tracking-tight"
-          >
-            Employment Application
-          </motion.h1>
+          <h1 className="text-5xl md:text-6xl font-bold text-white tracking-tight">
+            <MaskText text="Employment Application" />
+          </h1>
           <motion.p
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
+            transition={{ duration: 0.85, delay: 0.2, ease: EASE }}
             className="mt-6 text-xl text-gray-300 max-w-3xl mx-auto"
           >
             Evergreen Online Application for Employment
           </motion.p>
           <motion.p
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.3 }}
+            transition={{ duration: 0.85, delay: 0.3, ease: EASE }}
             className="mt-4 text-gray-400 max-w-2xl mx-auto"
           >
             Please fill out our Employment Application Form below. Areas marked with * are required.
@@ -100,9 +92,9 @@ export default function EmploymentPage() {
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.form
             onSubmit={handleSubmit}
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 56 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
+            transition={{ duration: 0.85, ease: EASE }}
             className="space-y-10"
           >
             {/* SECTION 1: General Information */}
@@ -741,14 +733,14 @@ export default function EmploymentPage() {
 
             {/* Submit Button */}
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 40 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               className="text-center"
             >
               <button
                 type="submit"
-                className="px-16 py-5 text-lg font-bold text-white rounded-xl transition-all duration-300 hover:opacity-90 transform hover:scale-105 shadow-xl"
+                className="px-16 py-5 text-lg font-bold text-white rounded-xl transition-all duration-300 hover:opacity-90 transform hover:-translate-y-2 shadow-xl"
                 style={{ backgroundColor: "#2d7a3a" }}
               >
                 Submit Employment Application

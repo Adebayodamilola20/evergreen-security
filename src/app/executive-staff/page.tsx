@@ -3,6 +3,8 @@
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { executives } from "@/lib/executives";
+import { EASE } from "@/components/motion/ease";
+import MaskText from "@/components/motion/MaskText";
 
 // Board of Directors names from Evergreen Security
 const boardOfDirectors = [
@@ -41,18 +43,13 @@ export default function ExecutiveStaffPage() {
           <div className="absolute bottom-0 right-0 w-96 h-96 bg-highlight rounded-full blur-3xl" />
         </div>
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center z-10">
-          <motion.h1
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="text-5xl md:text-6xl font-bold text-white tracking-tight"
-          >
-            Board & Executive Staff
-          </motion.h1>
+          <h1 className="text-5xl md:text-6xl font-bold text-white tracking-tight">
+            <MaskText text="Board & Executive Staff" />
+          </h1>
           <motion.p
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
+            transition={{ duration: 0.85, delay: 0.2, ease: EASE }}
             className="mt-6 text-lg sm:text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed"
           >
             Our board comprises distinguished professionals with decades of combined experience in security, military operations, corporate leadership, and strategic management. Each member brings unique expertise that shapes our commitment to excellence.
@@ -67,10 +64,10 @@ export default function ExecutiveStaffPage() {
           {/* Section 1: Board of Directors */}
           <div className="mb-24">
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 40 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.5 }}
+              transition={{ duration: 0.85, ease: EASE }}
               className="text-left mb-16"
             >
               <h2 className="text-4xl font-extrabold text-primary mb-2 tracking-tight">
@@ -85,11 +82,11 @@ export default function ExecutiveStaffPage() {
                 return (
                   <motion.div
                     key={item}
-                    initial={{ opacity: 0, y: 20 }}
+                    initial={{ opacity: 0, y: 40 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
-                    transition={{ duration: 0.5, delay: index * 0.08 }}
-                    className="text-center p-8 bg-gray-50/50 backdrop-blur-sm rounded-2xl border border-gray-100 shadow-sm transition-all duration-300 hover:shadow-lg hover:scale-105 group"
+                    transition={{ duration: 0.85, delay: index * 0.08, ease: EASE }}
+                    className="text-center p-8 bg-gray-50/50 backdrop-blur-sm rounded-2xl border border-gray-100 shadow-sm transition-all duration-300 hover:shadow-lg hover:-translate-y-2 group"
                   >
                     <p className="text-lg font-bold text-primary tracking-wide group-hover:text-accent transition-colors duration-300">
                       <span>{formatted.name}</span>
@@ -108,10 +105,10 @@ export default function ExecutiveStaffPage() {
           {/* Section 2: Director of Management */}
           <div className="mb-24">
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 40 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.5 }}
+              transition={{ duration: 0.85, ease: EASE }}
               className="text-left mb-16"
             >
               <h2 className="text-4xl font-extrabold text-primary mb-2 tracking-tight">
@@ -127,10 +124,10 @@ export default function ExecutiveStaffPage() {
                   initial={{ opacity: 0, y: 24 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
-                  transition={{ duration: 0.6, delay: index * 0.1 }}
+                  transition={{ duration: 0.85, delay: index * 0.1, ease: EASE }}
                 >
                   <Link href={`/executive-staff/${director.slug}`} className="group block">
-                    <div className="relative rounded-2xl overflow-hidden shadow-md group-hover:shadow-2xl border border-gray-100 transition-all duration-300 hover:scale-105 h-96 flex items-center justify-center bg-navy">
+                    <div className="relative rounded-2xl overflow-hidden shadow-md group-hover:shadow-2xl border border-gray-100 transition-all duration-300 hover:-translate-y-2 h-96 flex items-center justify-center bg-navy">
                       <span className="text-8xl font-bold text-white/10 select-none">
                         {director.name.split(" ").map((n: string) => n[0]).filter(Boolean).join("")}
                       </span>
@@ -157,10 +154,10 @@ export default function ExecutiveStaffPage() {
           {managers.length > 0 && (
             <div>
               <motion.div
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 40 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.5 }}
+                transition={{ duration: 0.85, ease: EASE }}
                 className="text-left mb-16"
               >
                 <h2 className="text-4xl font-extrabold text-primary mb-2 tracking-tight">
@@ -176,10 +173,10 @@ export default function ExecutiveStaffPage() {
                     initial={{ opacity: 0, y: 24 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
-                    transition={{ duration: 0.6, delay: index * 0.1 }}
+                    transition={{ duration: 0.85, delay: index * 0.1, ease: EASE }}
                   >
                     <Link href={`/executive-staff/${manager.slug}`} className="group block">
-                      <div className="relative rounded-2xl overflow-hidden shadow-md group-hover:shadow-2xl border border-gray-100 transition-all duration-300 hover:scale-105 h-96 flex items-center justify-center bg-navy">
+                      <div className="relative rounded-2xl overflow-hidden shadow-md group-hover:shadow-2xl border border-gray-100 transition-all duration-300 hover:-translate-y-2 h-96 flex items-center justify-center bg-navy">
                         <span className="text-8xl font-bold text-white/10 select-none">
                           {manager.name.split(" ").map((n: string) => n[0]).filter(Boolean).join("")}
                         </span>

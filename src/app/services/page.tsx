@@ -5,6 +5,8 @@ import SectionHeader from "@/components/SectionHeader";
 import ServiceCard from "@/components/ServiceCard";
 import CTASection from "@/components/CTASection";
 import { Service } from "@/lib/types";
+import MaskText from "@/components/motion/MaskText";
+import { EASE } from "@/components/motion/ease";
 
 const services: Service[] = [
   {
@@ -212,18 +214,13 @@ export default function ServicesPage() {
           <div className="absolute top-0 left-0 w-96 h-96 bg-evergreen rounded-full blur-3xl" />
         </div>
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <motion.h1
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="text-5xl md:text-6xl font-bold text-white tracking-tight"
-          >
-            Our Services
-          </motion.h1>
+          <h1 className="text-5xl md:text-6xl font-bold text-white tracking-tight">
+            <MaskText text="Our Services" />
+          </h1>
           <motion.p
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
+            transition={{ duration: 0.85, delay: 0.2, ease: EASE }}
             className="mt-6 text-xl text-gray-300 max-w-3xl mx-auto"
           >
             Comprehensive security solutions designed to protect your people, assets, and operations.

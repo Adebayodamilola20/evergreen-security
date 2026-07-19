@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { blogPosts, getBlogPost } from "@/lib/blog";
+import MaskText from "@/components/motion/MaskText";
+import Reveal from "@/components/motion/Reveal";
 
 export function generateStaticParams() {
   return blogPosts.map((post) => ({ slug: post.slug }));
@@ -26,9 +28,15 @@ export default async function BlogPostPage({
             ← Back to Latest Posts
           </Link>
           <div className="mt-8 max-w-4xl">
-            <p className="text-sm font-semibold uppercase tracking-[0.2em] text-white/70">{post.category}</p>
-            <h1 className="mt-4 text-4xl sm:text-5xl font-bold leading-tight tracking-tight">{post.title}</h1>
-            <p className="mt-5 text-base text-white/70">{post.date}</p>
+            <Reveal y={20}>
+              <p className="text-sm font-semibold uppercase tracking-[0.2em] text-white/70">{post.category}</p>
+            </Reveal>
+            <h1 className="mt-4 text-4xl sm:text-5xl font-bold leading-tight tracking-tight">
+              <MaskText text={post.title} delay={0.1} />
+            </h1>
+            <Reveal delay={0.3}>
+              <p className="mt-5 text-base text-white/70">{post.date}</p>
+            </Reveal>
           </div>
         </div>
       </section>

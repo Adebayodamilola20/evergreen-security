@@ -5,6 +5,8 @@ import SectionHeader from "@/components/SectionHeader";
 import ApplicationForm from "@/components/ApplicationForm";
 import CTASection from "@/components/CTASection";
 import { CareerBenefit, CareerPosition } from "@/lib/types";
+import MaskText from "@/components/motion/MaskText";
+import { EASE } from "@/components/motion/ease";
 
 const benefits: CareerBenefit[] = [
   {
@@ -93,18 +95,13 @@ export default function CareersPage() {
           <div className="absolute top-0 right-0 w-96 h-96 bg-evergreen rounded-full blur-3xl" />
         </div>
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <motion.h1
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="text-5xl md:text-6xl font-bold text-white tracking-tight"
-          >
-            Careers
-          </motion.h1>
+          <h1 className="text-5xl md:text-6xl font-bold text-white tracking-tight">
+            <MaskText text="Careers" />
+          </h1>
           <motion.p
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
+            transition={{ duration: 0.85, delay: 0.2, ease: EASE }}
             className="mt-6 text-xl text-gray-300 max-w-3xl mx-auto"
           >
             Join a team of dedicated security professionals committed to excellence and service.
@@ -122,10 +119,10 @@ export default function CareersPage() {
             {benefits.map((benefit, index) => (
               <motion.div
                 key={benefit.title}
-                initial={{ opacity: 0, y: 30 }}
+                initial={{ opacity: 0, y: 56 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
+                transition={{ duration: 0.85, delay: index * 0.1, ease: EASE }}
                 className="bg-gray-50 rounded-xl p-6 border border-gray-100 hover:shadow-lg transition-all duration-300"
               >
                 <h3 className="text-lg font-bold text-navy mb-2">{benefit.title}</h3>
@@ -146,10 +143,10 @@ export default function CareersPage() {
             {positions.map((position, index) => (
               <motion.div
                 key={position.title}
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 40 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.4, delay: index * 0.1 }}
+                transition={{ duration: 0.85, delay: index * 0.1, ease: EASE }}
                 className="bg-white rounded-xl p-6 shadow-md border border-gray-100 hover:shadow-lg transition-all duration-300"
               >
                 <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
@@ -193,7 +190,7 @@ export default function CareersPage() {
               initial={{ opacity: 0, x: -20 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
+              transition={{ duration: 0.85, ease: EASE }}
             >
               <SectionHeader
                 title="Minimum Requirements"
@@ -218,7 +215,7 @@ export default function CareersPage() {
               initial={{ opacity: 0, x: 20 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
+              transition={{ duration: 0.85, ease: EASE }}
             >
               <SectionHeader
                 title="Recruitment Process"

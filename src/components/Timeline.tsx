@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { EASE } from "@/components/motion/ease";
 
 interface TimelineEvent {
   year: string;
@@ -17,10 +18,10 @@ export default function Timeline({ events }: { events: TimelineEvent[] }) {
         {events.map((event, index) => (
           <motion.div
             key={event.year}
-            initial={{ opacity: 0, x: index % 2 === 0 ? -30 : 30 }}
+            initial={{ opacity: 0, x: index % 2 === 0 ? -64 : 64 }}
             whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: index * 0.15 }}
+            viewport={{ once: true, margin: "-10%" }}
+            transition={{ duration: 0.9, ease: EASE }}
             className={`relative flex flex-col md:flex-row items-start gap-8 ${
               index % 2 === 0 ? "md:flex-row" : "md:flex-row-reverse"
             }`}

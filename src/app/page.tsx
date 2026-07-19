@@ -1,9 +1,21 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import {
+  motion,
+  AnimatePresence,
+  useInView,
+  useScroll,
+  useTransform,
+} from "framer-motion";
 import Link from "next/link";
 import { executives } from "@/lib/executives";
+import MaskText from "@/components/motion/MaskText";
+import Reveal from "@/components/motion/Reveal";
+import Parallax from "@/components/motion/Parallax";
+import ClipReveal from "@/components/motion/ClipReveal";
+import Marquee from "@/components/motion/Marquee";
+import { EASE } from "@/components/motion/ease";
 
 // Service list from Evergreen Security
 const servicesData = [
@@ -63,6 +75,43 @@ const testimonials = [
   }
 ];
 
+// Number that counts up from 0 when it scrolls into view
+function CountUp({ end, suffix = "" }: { end: number; suffix?: string }) {
+  const [count, setCount] = useState(0);
+  const ref = useRef<HTMLSpanElement>(null);
+  const inView = useInView(ref, { once: true });
+
+  useEffect(() => {
+    if (!inView) return;
+    let current = 0;
+    const steps = 60;
+    const increment = end / steps;
+    const timer = setInterval(() => {
+      current += increment;
+      if (current >= end) {
+        setCount(end);
+        clearInterval(timer);
+      } else {
+        setCount(Math.floor(current));
+      }
+    }, 2000 / steps);
+    return () => clearInterval(timer);
+  }, [inView, end]);
+
+  return (
+    <span ref={ref}>
+      {count.toLocaleString()}
+      {suffix}
+    </span>
+  );
+}
+
+const HERO_LINES = [
+  "Your Safety Isn't",
+  "Just a Priority—",
+  "It's Our Legacy in Motion.",
+];
+
 export default function Home() {
   // Hero Carousel state (commented out — using single static image)
   // const [heroIndex, setHeroIndex] = useState(0);
@@ -79,6 +128,15 @@ export default function Home() {
   //   }, 5000);
   //   return () => clearInterval(interval);
   // }, [heroImages.length]);
+
+  // Scroll-driven hero motion: as the next section rises over the pinned
+  // hero, the background drifts down (parallax) while the copy lifts away
+  // and fades — the hero feels like it recedes instead of just sitting there.
+  const { scrollY } = useScroll();
+  const heroImgY = useTransform(scrollY, [0, 900], [0, 180]);
+  const heroImgScale = useTransform(scrollY, [0, 900], [1, 1.12]);
+  const heroContentY = useTransform(scrollY, [0, 700], [0, -110]);
+  const heroContentOpacity = useTransform(scrollY, [100, 650], [1, 0]);
 
   // Chatbot state
   const [chatOpen, setChatOpen] = useState(false);
@@ -197,34 +255,60 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 overflow-x-hidden">
+    <div className="min-h-screen bg-gray-50 curtain-flow">
       {/* 1. Hero Carousel Section */}
-      <section className="relative min-h-[90vh] md:min-h-screen flex items-center justify-start overflow-hidden py-20 md:py-0">
+      <section className="curtain-pin curtain-hero relative min-h-[90vh] md:min-h-screen flex items-center justify-start overflow-hidden py-20 md:py-0">
         <div className="absolute inset-0 z-0">
-          <div className="absolute inset-0">
-            <img
-              src="/assets/jonney .jpg"
-              alt="Hero background"
-              className="w-full h-full object-cover"
-            />
+          <div className="absolute inset-0 overflow-hidden">
+            <motion.div
+              className="absolute inset-0"
+              style={{ y: heroImgY, scale: heroImgScale }}
+            >
+              <motion.img
+                src="/assets/jonney .jpg"
+                alt="Hero background"
+                className="w-full h-full object-cover"
+                initial={{ scale: 1.15 }}
+                animate={{ scale: 1 }}
+                transition={{ duration: 7, ease: "easeOut" }}
+              />
+            </motion.div>
           </div>
           <div className="absolute inset-0 bg-black/40 z-10" />
         </div>
 
-        <div className="relative z-10 container-custom px-4 sm:px-6 lg:px-8 text-white mt-16 md:mt-24">
+        <motion.div
+          className="relative z-10 container-custom px-4 sm:px-6 lg:px-8 text-white mt-16 md:mt-24"
+          style={{ y: heroContentY, opacity: heroContentOpacity }}
+        >
           <motion.div
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
+            transition={{ duration: 0.8, ease: EASE }}
             className="max-w-4xl text-left pl-0"
           >
             <h1 className="text-4xl sm:text-5xl md:text-7xl font-bold mb-6 leading-tight tracking-tight max-w-3xl">
-              Your Safety Isn&apos;t <br />Just a Priority— <br />
-              <span className="text-white italic drop-shadow-lg">It&apos;s Our Legacy in Motion.</span>
+              {HERO_LINES.map((line, i) => (
+                <span key={line} className="block overflow-hidden pb-1">
+                  <motion.span
+                    className={`block ${i === 2 ? "text-white italic drop-shadow-lg" : ""}`}
+                    initial={{ y: "110%", clipPath: "inset(0% 0% 100% 0%)" }}
+                    animate={{ y: 0, clipPath: "inset(0% 0% -25% 0%)" }}
+                    transition={{ duration: 0.9, delay: 0.35 + i * 0.13, ease: EASE }}
+                  >
+                    {line}
+                  </motion.span>
+                </span>
+              ))}
             </h1>
-            <p className="text-lg md:text-2xl mb-10 max-w-2xl text-white leading-relaxed drop-shadow-md">
+            <motion.p
+              initial={{ opacity: 0, y: 24 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.9, delay: 0.85, ease: EASE }}
+              className="text-lg md:text-2xl mb-10 max-w-2xl text-white leading-relaxed drop-shadow-md"
+            >
               We don&apos;t just protect spaces, we secure futures. Bridging the gap between security, technology, and visionary protection.
-            </p>
+            </motion.p>
             <div className="flex flex-col sm:flex-row gap-4 justify-start">
               <Link href="/contact" className="inline-flex items-center justify-center bg-white text-navy hover:bg-white/90 text-center text-lg font-bold px-8 py-4 rounded-full transition-all duration-300 hover:scale-105">
                 Join Our Team
@@ -237,70 +321,88 @@ export default function Home() {
               </Link>
             </div>
           </motion.div>
-        </div>
+        </motion.div>
       </section>
 
       {/* 2. Stats Section */}
-      <section className="section-padding bg-navy text-white py-12 md:py-16">
+      <section className="curtain-pin curtain-stats section-padding bg-navy text-white py-12 md:py-16">
         <div className="container-custom">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center divide-x divide-white/10">
             {[
-              { stat: "21+", label: "Years Experience" },
-              { stat: "12,000+", label: "Trained Professionals" },
-              { stat: "60+", label: "Corporate Clients" },
-              { stat: "7+", label: "Countries Served" }
+              { end: 21, suffix: "+", label: "Years Experience" },
+              { end: 12000, suffix: "+", label: "Trained Professionals" },
+              { end: 60, suffix: "+", label: "Corporate Clients" },
+              { end: 7, suffix: "+", label: "Countries Served" }
             ].map((item, index) => (
-              <motion.div
-                key={item.label}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                className="p-4"
-              >
-                <p className="text-3xl sm:text-5xl font-extrabold text-white mb-2">{item.stat}</p>
-                <p className="text-sm sm:text-lg text-white font-medium">{item.label}</p>
-              </motion.div>
+              <div key={item.label} className="p-4 overflow-hidden">
+                <motion.div
+                  initial={{ y: "80%", opacity: 0 }}
+                  whileInView={{ y: "0%", opacity: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.8, delay: index * 0.08, ease: EASE }}
+                >
+                  <p className="text-3xl sm:text-5xl font-extrabold text-white mb-2">
+                    <CountUp end={item.end} suffix={item.suffix} />
+                  </p>
+                  <p className="text-sm sm:text-lg text-white font-medium">{item.label}</p>
+                </motion.div>
+              </div>
             ))}
+          </div>
+
+          {/* Scroll-reactive client marquee — drifts on its own, accelerates
+              with the user's scroll */}
+          <div className="mt-12 border-t border-white/10 pt-10">
+            <Marquee speed={5} className="items-baseline gap-16 pr-16 text-5xl sm:text-7xl font-bold tracking-tight text-white/10 select-none">
+              {["CHI Limited", "MTN Nigeria", "Ardova PLC", "Cumming West Africa"].map((client) => (
+                <span key={client} className="flex items-baseline gap-16">
+                  <span>{client}</span>
+                  <span className="text-accent/40 text-3xl">✦</span>
+                </span>
+              ))}
+            </Marquee>
           </div>
         </div>
       </section>
 
       {/* 4. Who We Are Section */}
-      <section className="section-padding bg-gray-50 border-y border-gray-100">
+      <section className="curtain-pin curtain-who section-padding bg-gray-50 border-y border-gray-100">
         <div className="container-custom">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-            >
-              <div className="inline-block bg-highlight/10 text-primary px-4 py-1.5 rounded-full text-xs sm:text-sm font-bold mb-4">
-                WHO WE ARE
-              </div>
+            <div>
+              <Reveal y={20}>
+                <div className="inline-block bg-highlight/10 text-primary px-4 py-1.5 rounded-full text-xs sm:text-sm font-bold mb-4">
+                  WHO WE ARE
+                </div>
+              </Reveal>
               <h2 className="text-3xl sm:text-5xl font-bold text-primary mb-6 leading-tight">
-                Setting the Standard in Security Excellence
+                <MaskText text="Setting the Standard in Security Excellence" />
               </h2>
-              <p className="text-lg text-gray-700 mb-6 leading-relaxed">
-                Evergreen Security is a premier provider of comprehensive security solutions, combining cutting-edge technology with decades of expertise to deliver unparalleled protection for businesses and organizations worldwide.
-              </p>
-              <p className="text-gray-600 mb-8 leading-relaxed">
-                Our team of certified professionals brings together military, law enforcement, and corporate security experience to create customized solutions that address your unique security challenges.
-              </p>
-              <Link href="/about" className="btn-highlight inline-flex items-center text-lg px-8 py-3 rounded-full">
-                Learn More About Us
-                <svg className="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                </svg>
-              </Link>
-            </motion.div>
+              <Reveal delay={0.15}>
+                <p className="text-lg text-gray-700 mb-6 leading-relaxed">
+                  Evergreen Security is a premier provider of comprehensive security solutions, combining cutting-edge technology with decades of expertise to deliver unparalleled protection for businesses and organizations worldwide.
+                </p>
+              </Reveal>
+              <Reveal delay={0.25}>
+                <p className="text-gray-600 mb-8 leading-relaxed">
+                  Our team of certified professionals brings together military, law enforcement, and corporate security experience to create customized solutions that address your unique security challenges.
+                </p>
+              </Reveal>
+              <Reveal delay={0.35}>
+                <Link href="/about" className="btn-highlight inline-flex items-center text-lg px-8 py-3 rounded-full">
+                  Learn More About Us
+                  <svg className="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                  </svg>
+                </Link>
+              </Reveal>
+            </div>
 
             <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.2 }}
+              initial="initial"
+              whileInView="inView"
+              viewport={{ once: true, margin: "-10%" }}
+              variants={{ inView: { transition: { staggerChildren: 0.1, delayChildren: 0.15 } } }}
               className="grid grid-cols-1 sm:grid-cols-2 gap-4"
             >
               {[
@@ -342,16 +444,20 @@ export default function Home() {
                   )
                 }
               ].map((value) => (
-                <div
+                <motion.div
                   key={value.title}
-                  className="bg-gradient-to-br from-navy to-navy-light text-white p-6 rounded-xl hover:scale-105 transition-transform duration-300 shadow-md border border-white/5 flex flex-col items-start gap-4"
+                  variants={{
+                    initial: { opacity: 0, y: 48 },
+                    inView: { opacity: 1, y: 0, transition: { duration: 0.8, ease: EASE } },
+                  }}
+                  className="bg-gradient-to-br from-navy to-navy-light text-white p-6 rounded-xl hover:-translate-y-2 transition-transform duration-300 shadow-md border border-white/5 flex flex-col items-start gap-4"
                 >
                   <div className="w-14 h-14 bg-white/10 rounded-lg flex items-center justify-center">
                     {value.icon}
                   </div>
                   <h3 className="text-xl font-bold leading-tight">{value.title}</h3>
                   <p className="text-sm text-gray-300 leading-relaxed">{value.desc}</p>
-                </div>
+                </motion.div>
               ))}
             </motion.div>
           </div>
@@ -359,35 +465,33 @@ export default function Home() {
       </section>
 
       {/* 5. What We Offer (Services) Section */}
-      <section className="section-padding bg-white">
+      <section className="curtain-pin curtain-services section-padding bg-white">
         <div className="container-custom">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
-            className="text-center mb-16"
-          >
-            <div className="inline-block bg-highlight/10 text-primary px-4 py-1 rounded-full text-sm font-semibold mb-4">
-              WHAT WE OFFER
-            </div>
+          <div className="text-center mb-16">
+            <Reveal y={20}>
+              <div className="inline-block bg-highlight/10 text-primary px-4 py-1 rounded-full text-sm font-semibold mb-4">
+                WHAT WE OFFER
+              </div>
+            </Reveal>
             <h2 className="text-3xl sm:text-5xl font-bold text-navy mb-4">
-              Comprehensive Security Solutions
+              <MaskText text="Comprehensive Security Solutions" />
             </h2>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              From corporate security to specialized training, we provide end-to-end solutions tailored to your unique operational needs.
-            </p>
-          </motion.div>
+            <Reveal delay={0.2}>
+              <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+                From corporate security to specialized training, we provide end-to-end solutions tailored to your unique operational needs.
+              </p>
+            </Reveal>
+          </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {servicesData.map((service, index) => (
               <motion.article
                 key={service.id}
-                initial={{ opacity: 0, y: 30 }}
+                initial={{ opacity: 0, y: 64 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                className="group h-full bg-gray-50 hover:bg-white hover:shadow-2xl transition-all duration-300 hover:scale-105 border border-gray-100 rounded-2xl p-8 flex flex-col justify-between border-t-4 border-t-transparent hover:border-t-accent"
+                viewport={{ once: true, margin: "-10%" }}
+                transition={{ duration: 0.9, delay: (index % 3) * 0.12, ease: EASE }}
+                className="group h-full bg-gray-50 hover:bg-white hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 border border-gray-100 rounded-2xl p-8 flex flex-col justify-between border-t-4 border-t-transparent hover:border-t-accent"
               >
                 <div>
                   <div className="w-14 h-14 bg-accent/10 rounded-xl flex items-center justify-center mb-6 group-hover:bg-highlight/20 transition-colors duration-300">
@@ -422,91 +526,98 @@ export default function Home() {
       </section>
 
       {/* 6. Training Section */}
-      <section className="section-padding bg-navy text-white">
+      <section className="curtain-pin curtain-training section-padding bg-navy text-white">
         <div className="container-custom">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-              className="relative rounded-2xl overflow-hidden shadow-2xl h-[300px] sm:h-[400px] border border-white/5"
-            >
-              <img
-                src="/assets/bingi3.jpg"
-                alt="Security Training"
-                className="w-full h-full object-cover"
-                loading="lazy"
-              />
-            </motion.div>
+            <ClipReveal className="relative rounded-2xl overflow-hidden shadow-2xl h-[300px] sm:h-[400px] border border-white/5">
+              <Parallax amount={8} className="h-full w-full">
+                <img
+                  src="/assets/bingi3.jpg"
+                  alt="Security Training"
+                  className="w-full h-full object-cover"
+                  loading="lazy"
+                />
+              </Parallax>
+            </ClipReveal>
 
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className="space-y-8"
-            >
-              <div className="inline-block bg-highlight/20 text-highlight px-4 py-1.5 rounded-full text-xs sm:text-sm font-semibold tracking-wide">
-                TRAINING & DEVELOPMENT
-              </div>
+            <div className="space-y-8">
+              <Reveal y={20}>
+                <div className="inline-block bg-highlight/20 text-highlight px-4 py-1.5 rounded-full text-xs sm:text-sm font-semibold tracking-wide">
+                  TRAINING & DEVELOPMENT
+                </div>
+              </Reveal>
               <h2 className="text-3xl sm:text-5xl font-bold mb-6 leading-tight">
-                World-Class Security Training Programs
+                <MaskText text="World-Class Security Training Programs" />
               </h2>
-              <p className="text-lg text-gray-200 mb-6 leading-relaxed">
-                Our comprehensive training programs are designed to develop highly skilled security professionals capable of handling diverse situations with confidence, discipline, and tactical expertise.
-              </p>
-              <ul className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
+              <Reveal delay={0.15}>
+                <p className="text-lg text-gray-200 mb-6 leading-relaxed">
+                  Our comprehensive training programs are designed to develop highly skilled security professionals capable of handling diverse situations with confidence, discipline, and tactical expertise.
+                </p>
+              </Reveal>
+              <motion.ul
+                className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8"
+                initial="initial"
+                whileInView="inView"
+                viewport={{ once: true, margin: "-10%" }}
+                variants={{ inView: { transition: { staggerChildren: 0.08, delayChildren: 0.25 } } }}
+              >
                 {["Basic Security Training", "Advanced Tactical Operations", "Crisis Management", "Specialized Certifications"].map((program, idx) => (
-                  <li key={idx} className="flex items-center text-gray-200 text-sm sm:text-base">
+                  <motion.li
+                    key={idx}
+                    variants={{
+                      initial: { opacity: 0, x: -24 },
+                      inView: { opacity: 1, x: 0, transition: { duration: 0.7, ease: EASE } },
+                    }}
+                    className="flex items-center text-gray-200 text-sm sm:text-base"
+                  >
                     <span className="w-2.5 h-2.5 bg-highlight rounded-full mr-3 flex-shrink-0" />
                     {program}
-                  </li>
+                  </motion.li>
                 ))}
-              </ul>
-              <Link href="/training" className="btn-highlight inline-flex items-center text-lg px-8 py-3.5 rounded-full">
-                Explore Training Programs
-                <svg className="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                </svg>
-              </Link>
-            </motion.div>
+              </motion.ul>
+              <Reveal delay={0.4}>
+                <Link href="/training" className="btn-highlight inline-flex items-center text-lg px-8 py-3.5 rounded-full">
+                  Explore Training Programs
+                  <svg className="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                  </svg>
+                </Link>
+              </Reveal>
+            </div>
           </div>
         </div>
       </section>
 
       {/* 7. Meet Our Directors (Executive Staff) */}
-      <section className="section-padding bg-gray-50">
+      <section className="curtain-pin curtain-directors section-padding bg-gray-50">
         <div className="container-custom">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
-            className="text-center mb-16"
-          >
-            <div className="inline-block bg-highlight/10 text-primary px-4 py-1.5 rounded-full text-sm font-semibold mb-4">
-              LEADERSHIP TEAM
-            </div>
+          <div className="text-center mb-16">
+            <Reveal y={20}>
+              <div className="inline-block bg-highlight/10 text-primary px-4 py-1.5 rounded-full text-sm font-semibold mb-4">
+                LEADERSHIP TEAM
+              </div>
+            </Reveal>
             <h2 className="text-3xl sm:text-5xl font-bold text-primary mb-4 leading-tight">
-              Meet Our Directors
+              <MaskText text="Meet Our Directors" />
             </h2>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              Experienced leaders driving innovation, integrity, and operational excellence in security solutions worldwide.
-            </p>
-          </motion.div>
+            <Reveal delay={0.2}>
+              <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+                Experienced leaders driving innovation, integrity, and operational excellence in security solutions worldwide.
+              </p>
+            </Reveal>
+          </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
             {executives.slice(0, 3).map((director, index) => (
               <motion.div
                 key={director.slug}
-                initial={{ opacity: 0, y: 30 }}
+                initial={{ opacity: 0, y: 64 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
+                viewport={{ once: true, margin: "-10%" }}
+                transition={{ duration: 0.9, delay: index * 0.12, ease: EASE }}
               >
                 <Link href={`/executive-staff/${director.slug}`} className="group block h-full">
-                  <div className="bg-white rounded-2xl overflow-hidden shadow-md group-hover:shadow-xl transition-all duration-300 group-hover:scale-105 border border-gray-100 flex flex-col h-full">
+                  <div className="bg-white rounded-2xl overflow-hidden shadow-md group-hover:shadow-xl transition-all duration-300 group-hover:-translate-y-2 border border-gray-100 flex flex-col h-full">
                     <div className="relative h-64 overflow-hidden bg-navy flex items-center justify-center">
                       <span className="text-7xl font-bold text-white/10 select-none">
                         {director.name.split(" ").map((n: string) => n[0]).filter(Boolean).join("")}
@@ -550,33 +661,31 @@ export default function Home() {
       {/* 8. Client Testimonials Section */}
       <section className="section-padding bg-white">
         <div className="container-custom">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
-            className="text-center mb-16"
-          >
-            <div className="inline-block bg-highlight/10 text-primary px-4 py-1.5 rounded-full text-sm font-semibold mb-4">
-              CLIENT TESTIMONIALS
-            </div>
+          <div className="text-center mb-16">
+            <Reveal y={20}>
+              <div className="inline-block bg-highlight/10 text-primary px-4 py-1.5 rounded-full text-sm font-semibold mb-4">
+                CLIENT TESTIMONIALS
+              </div>
+            </Reveal>
             <h2 className="text-3xl sm:text-5xl font-bold text-primary mb-4 leading-tight">
-              What Our Clients Say
+              <MaskText text="What Our Clients Say" />
             </h2>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              Trusted by industry leaders worldwide for exceptional security solutions, reliable rapid response, and client care.
-            </p>
-          </motion.div>
+            <Reveal delay={0.2}>
+              <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+                Trusted by industry leaders worldwide for exceptional security solutions, reliable rapid response, and client care.
+              </p>
+            </Reveal>
+          </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {testimonials.map((test, index) => (
               <motion.div
                 key={test.author}
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 48 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                className="bg-gray-50 border-l-4 border-l-accent p-6 rounded-r-xl flex flex-col justify-between hover:shadow-lg transition-all duration-300"
+                viewport={{ once: true, margin: "-10%" }}
+                transition={{ duration: 0.8, delay: index * 0.1, ease: EASE }}
+                className="bg-gray-50 border-l-4 border-l-accent p-6 rounded-r-xl flex flex-col justify-between hover:shadow-lg hover:-translate-y-1 transition-all duration-300"
               >
                 <div>
                   <div className="flex gap-1 mb-4">

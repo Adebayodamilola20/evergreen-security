@@ -3,6 +3,8 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Testimonial } from "@/lib/types";
+import MaskText from "@/components/motion/MaskText";
+import { EASE } from "@/components/motion/ease";
 
 const testimonials: Testimonial[] = [
   {
@@ -42,25 +44,28 @@ export default function TestimonialCarousel() {
       </div>
 
       <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-12"
-        >
-          <h2 className="text-4xl md:text-5xl font-bold text-white tracking-tight">What Our Clients Say</h2>
-          <div className="w-20 h-1 mt-4 mx-auto" style={{ backgroundColor: "#2d7a3a" }} />
-        </motion.div>
+        <div className="text-center mb-12">
+          <h2 className="text-4xl md:text-5xl font-bold text-white tracking-tight">
+            <MaskText text="What Our Clients Say" />
+          </h2>
+          <motion.div
+            className="w-20 h-1 mt-4 mx-auto"
+            style={{ backgroundColor: "#2d7a3a" }}
+            initial={{ scaleX: 0 }}
+            whileInView={{ scaleX: 1 }}
+            viewport={{ once: true, margin: "-10%" }}
+            transition={{ duration: 0.8, delay: 0.3, ease: EASE }}
+          />
+        </div>
 
         <div className="relative min-h-[250px]">
           <AnimatePresence mode="wait">
             <motion.div
               key={current}
-              initial={{ opacity: 0, x: 50 }}
+              initial={{ opacity: 0, x: 64 }}
               animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -50 }}
-              transition={{ duration: 0.5 }}
+              exit={{ opacity: 0, x: -64 }}
+              transition={{ duration: 0.6, ease: EASE }}
               className="text-center"
             >
               <svg className="w-12 h-12 mx-auto mb-6 text-evergreen opacity-50" fill="currentColor" viewBox="0 0 24 24">

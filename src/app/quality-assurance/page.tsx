@@ -4,6 +4,8 @@ import { motion } from "framer-motion";
 import SectionHeader from "@/components/SectionHeader";
 import CTASection from "@/components/CTASection";
 import { QualityStandard } from "@/lib/types";
+import MaskText from "@/components/motion/MaskText";
+import { EASE } from "@/components/motion/ease";
 
 const standards: QualityStandard[] = [
   {
@@ -46,18 +48,13 @@ export default function QualityAssurancePage() {
           <div className="absolute top-0 right-0 w-96 h-96 bg-evergreen rounded-full blur-3xl" />
         </div>
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <motion.h1
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="text-5xl md:text-6xl font-bold text-white tracking-tight"
-          >
-            Quality Assurance Program
-          </motion.h1>
+          <h1 className="text-5xl md:text-6xl font-bold text-white tracking-tight">
+            <MaskText text="Quality Assurance Program" />
+          </h1>
           <motion.p
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
+            transition={{ duration: 0.85, delay: 0.2, ease: EASE }}
             className="mt-6 text-xl text-gray-300 max-w-3xl mx-auto"
           >
             Our commitment to excellence is backed by a robust quality assurance framework that ensures consistent, high-quality service delivery.
@@ -75,10 +72,10 @@ export default function QualityAssurancePage() {
             {standards.map((item, index) => (
               <motion.div
                 key={item.title}
-                initial={{ opacity: 0, y: 30 }}
+                initial={{ opacity: 0, y: 56 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
+                transition={{ duration: 0.85, delay: index * 0.1, ease: EASE }}
                 className={`flex flex-col lg:flex-row gap-8 ${
                   index % 2 === 1 ? "lg:flex-row-reverse" : ""
                 }`}
@@ -111,10 +108,10 @@ export default function QualityAssurancePage() {
             subtitle="Every client engagement is backed by a commitment to excellence."
           />
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
+            transition={{ duration: 0.85, ease: EASE }}
             className="bg-gray-50 rounded-2xl p-10 border border-gray-100"
           >
             <p className="text-gray-600 leading-relaxed text-lg mb-8">

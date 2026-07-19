@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { EASE } from "@/components/motion/ease";
 
 interface TeamCardProps {
   name: string;
@@ -18,11 +19,11 @@ export default function TeamCard({ name, role, bio, index = 0 }: TeamCardProps) 
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 30 }}
+      initial={{ opacity: 0, y: 56 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.5, delay: index * 0.15 }}
-      className="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 group"
+      viewport={{ once: true, margin: "-10%" }}
+      transition={{ duration: 0.85, delay: (index % 3) * 0.12, ease: EASE }}
+      className="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl hover:-translate-y-2 transition-all duration-300 border border-gray-100 group"
     >
       <div className="h-64 bg-gradient-to-br from-navy to-navy-light flex items-center justify-center relative overflow-hidden">
         <div className="absolute inset-0 opacity-20">

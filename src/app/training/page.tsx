@@ -4,6 +4,8 @@ import { motion } from "framer-motion";
 import SectionHeader from "@/components/SectionHeader";
 import CTASection from "@/components/CTASection";
 import { TrainingProgram, TrainingMethodology } from "@/lib/types";
+import MaskText from "@/components/motion/MaskText";
+import { EASE } from "@/components/motion/ease";
 
 const programs: TrainingProgram[] = [
   {
@@ -133,18 +135,13 @@ export default function TrainingPage() {
           <div className="absolute top-0 right-0 w-96 h-96 bg-evergreen rounded-full blur-3xl" />
         </div>
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <motion.h1
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="text-5xl md:text-6xl font-bold text-white tracking-tight"
-          >
-            Security Training
-          </motion.h1>
+          <h1 className="text-5xl md:text-6xl font-bold text-white tracking-tight">
+            <MaskText text="Security Training" />
+          </h1>
           <motion.p
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
+            transition={{ duration: 0.85, delay: 0.2, ease: EASE }}
             className="mt-6 text-xl text-gray-300 max-w-3xl mx-auto"
           >
             Developing the next generation of security professionals through comprehensive, hands-on training programs.
@@ -162,10 +159,10 @@ export default function TrainingPage() {
             {programs.map((program, index) => (
               <motion.div
                 key={program.title}
-                initial={{ opacity: 0, y: 30 }}
+                initial={{ opacity: 0, y: 56 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
+                transition={{ duration: 0.85, delay: index * 0.1, ease: EASE }}
                 className="bg-gray-50 rounded-2xl p-8 md:p-10 border border-gray-100"
               >
                 <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4 mb-6">
@@ -199,10 +196,10 @@ export default function TrainingPage() {
             {methodology.map((method, index) => (
               <motion.div
                 key={method.title}
-                initial={{ opacity: 0, y: 30 }}
+                initial={{ opacity: 0, y: 56 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: index * 0.15 }}
+                transition={{ duration: 0.85, delay: index * 0.15, ease: EASE }}
                 className="bg-white rounded-xl p-6 shadow-lg border border-gray-100"
               >
                 <div className="w-12 h-12 rounded-lg flex items-center justify-center mb-4" style={{ backgroundColor: "#2d7a3a" }}>
@@ -220,10 +217,10 @@ export default function TrainingPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 40 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
+              transition={{ duration: 0.85, ease: EASE }}
               className="bg-navy rounded-2xl p-10 text-white"
             >
               <h3 className="text-2xl font-bold mb-4">Certification Process</h3>
@@ -251,10 +248,10 @@ export default function TrainingPage() {
             </motion.div>
 
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 40 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.2 }}
+              transition={{ duration: 0.85, delay: 0.2, ease: EASE }}
               className="bg-gray-50 rounded-2xl p-10 border border-gray-100"
             >
               <h3 className="text-2xl font-bold text-navy mb-4">Continuous Development Program</h3>

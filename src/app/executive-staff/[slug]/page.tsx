@@ -3,6 +3,7 @@
 import { useParams } from "next/navigation";
 import Link from "next/link";
 import { motion } from "framer-motion";
+import { EASE } from "@/components/motion/ease";
 import { executives, getExecutiveBySlug } from "@/lib/executives";
 
 function getInitials(name: string) {
@@ -48,7 +49,7 @@ export default function ExecutiveProfilePage() {
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.4 }}
+            transition={{ duration: 0.7, ease: EASE }}
             className="mb-10"
           >
             <Link
@@ -66,9 +67,9 @@ export default function ExecutiveProfilePage() {
           <div className="grid grid-cols-1 lg:grid-cols-5 gap-12">
             {/* Left Column - Photo / Avatar */}
             <motion.div
-              initial={{ opacity: 0, x: -30 }}
+              initial={{ opacity: 0, x: -56 }}
               animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6, delay: 0.1 }}
+              transition={{ duration: 0.85, delay: 0.1, ease: EASE }}
               className="lg:col-span-2"
             >
               <div className="sticky top-28">
@@ -88,7 +89,7 @@ export default function ExecutiveProfilePage() {
             <motion.div
               initial={{ opacity: 0, x: 30 }}
               animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
+              transition={{ duration: 0.85, delay: 0.2, ease: EASE }}
               className="lg:col-span-3"
             >
               <div className="inline-block px-4 py-1.5 text-xs font-semibold tracking-wider rounded-full mb-4" style={{ backgroundColor: "#2d7a3a", color: "white" }}>

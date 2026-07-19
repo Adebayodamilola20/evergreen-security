@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { motion, useInView } from "framer-motion";
 import { Stat } from "@/lib/types";
+import { EASE } from "@/components/motion/ease";
 
 interface StatsCounterProps {
   end: number;
@@ -37,12 +38,12 @@ function Counter({ end, suffix = "", prefix = "", label }: StatsCounterProps) {
   }, [inView, end]);
 
   return (
-    <div ref={ref} className="text-center p-8">
+    <div ref={ref} className="text-center p-8 overflow-hidden">
       <motion.p
-        initial={{ opacity: 0, scale: 0.5 }}
-        whileInView={{ opacity: 1, scale: 1 }}
+        initial={{ opacity: 0, y: "70%" }}
+        whileInView={{ opacity: 1, y: "0%" }}
         viewport={{ once: true }}
-        transition={{ duration: 0.5 }}
+        transition={{ duration: 0.8, ease: EASE }}
         className="text-5xl md:text-6xl font-bold text-evergreen"
       >
         {prefix}{count}{suffix}

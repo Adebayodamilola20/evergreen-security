@@ -3,6 +3,9 @@
 import Image from "next/image";
 import { motion } from "framer-motion";
 import CTASection from "@/components/CTASection";
+import { EASE } from "@/components/motion/ease";
+import MaskText from "@/components/motion/MaskText";
+import Reveal from "@/components/motion/Reveal";
 
 export default function GalleryPage() {
   const galleryImages = [
@@ -40,32 +43,35 @@ export default function GalleryPage() {
     <>
       <section className="pt-20 pb-16 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="text-center mb-16"
-          >
+          <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-bold text-navy tracking-tight">
-              Our Gallery
+              <MaskText text="Our Gallery" />
             </h2>
-            <div className="w-20 h-1 mt-4 mx-auto" style={{ backgroundColor: "#2d7a3a" }} />
-            <p className="mt-6 text-lg text-gray-600 max-w-3xl mx-auto">
-              A visual journey through our security operations, training, and
-              commitment to excellence.
-            </p>
-          </motion.div>
+            <motion.div
+              className="w-20 h-1 mt-4 mx-auto"
+              style={{ backgroundColor: "#2d7a3a" }}
+              initial={{ scaleX: 0 }}
+              whileInView={{ scaleX: 1 }}
+              viewport={{ once: true, margin: "-10%" }}
+              transition={{ duration: 0.8, delay: 0.3, ease: EASE }}
+            />
+            <Reveal delay={0.2}>
+              <p className="mt-6 text-lg text-gray-600 max-w-3xl mx-auto">
+                A visual journey through our security operations, training, and
+                commitment to excellence.
+              </p>
+            </Reveal>
+          </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {galleryImages.map((image, index) => (
               <motion.div
                 key={index}
-                initial={{ opacity: 0, scale: 0.9 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.4, delay: index * 0.08 }}
-                className="group relative h-64 overflow-hidden rounded-lg shadow-lg hover:shadow-xl transition-all duration-300"
+                initial={{ clipPath: "inset(100% 0% 0% 0%)", scale: 1.12 }}
+                whileInView={{ clipPath: "inset(0% 0% 0% 0%)", scale: 1 }}
+                viewport={{ once: true, margin: "-10%" }}
+                transition={{ duration: 0.9, delay: (index % 3) * 0.12, ease: EASE }}
+                className="group relative h-64 overflow-hidden rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300"
               >
                 <Image
                   src={image.src}

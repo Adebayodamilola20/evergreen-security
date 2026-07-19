@@ -2,6 +2,8 @@
 
 import { motion } from "framer-motion";
 import ContactForm from "@/components/ContactForm";
+import MaskText from "@/components/motion/MaskText";
+import { EASE } from "@/components/motion/ease";
 
 const offices = [
   {
@@ -38,18 +40,13 @@ export default function ContactPage() {
           <div className="absolute top-0 left-0 w-96 h-96 bg-evergreen rounded-full blur-3xl" />
         </div>
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <motion.h1
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="text-5xl md:text-6xl font-bold text-white tracking-tight"
-          >
-            Contact Us
-          </motion.h1>
+          <h1 className="text-5xl md:text-6xl font-bold text-white tracking-tight">
+            <MaskText text="Contact Us" />
+          </h1>
           <motion.p
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
+            transition={{ duration: 0.85, delay: 0.2, ease: EASE }}
             className="mt-6 text-xl text-gray-300 max-w-3xl mx-auto"
           >
             Get in touch with our team for security consultations, inquiries, or emergency support.
@@ -62,10 +59,10 @@ export default function ContactPage() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
             <div>
               <motion.div
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 40 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.6 }}
+                transition={{ duration: 0.85, ease: EASE }}
               >
                 <h2 className="text-4xl font-bold text-navy tracking-tight mb-4">Send Us a Message</h2>
                 <div className="w-20 h-1 mb-8" style={{ backgroundColor: "#2d7a3a" }} />
@@ -78,10 +75,10 @@ export default function ContactPage() {
 
             <div>
               <motion.div
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 40 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: 0.2 }}
+                transition={{ duration: 0.85, delay: 0.2, ease: EASE }}
               >
                 <h2 className="text-4xl font-bold text-navy tracking-tight mb-4">Our Offices</h2>
                 <div className="w-20 h-1 mb-8" style={{ backgroundColor: "#2d7a3a" }} />
@@ -94,10 +91,10 @@ export default function ContactPage() {
                 {offices.map((office, index) => (
                   <motion.div
                     key={office.name}
-                    initial={{ opacity: 0, y: 20 }}
+                    initial={{ opacity: 0, y: 40 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
-                    transition={{ duration: 0.4, delay: 0.3 + index * 0.15 }}
+                    transition={{ duration: 0.85, delay: 0.3 + index * 0.15, ease: EASE }}
                     className="bg-white rounded-xl p-6 shadow-md border border-gray-100"
                   >
                     <div className="flex items-center gap-3 mb-4">
@@ -146,10 +143,10 @@ export default function ContactPage() {
       <section className="py-12 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
+            transition={{ duration: 0.85, ease: EASE }}
             className="bg-gray-100 rounded-2xl h-[400px] flex items-center justify-center"
           >
             <div className="text-center text-gray-400">
@@ -167,10 +164,10 @@ export default function ContactPage() {
       <section className="py-16 bg-navy">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
+            transition={{ duration: 0.85, ease: EASE }}
           >
             <h2 className="text-3xl font-bold text-white mb-4">Emergency Security Support</h2>
             <div className="w-16 h-1 bg-evergreen mx-auto mb-6" />

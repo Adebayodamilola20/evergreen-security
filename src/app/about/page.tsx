@@ -5,6 +5,8 @@ import SectionHeader from "@/components/SectionHeader";
 import Timeline from "@/components/Timeline";
 import CTASection from "@/components/CTASection";
 import { TimelineEvent, CoreValue } from "@/lib/types";
+import MaskText from "@/components/motion/MaskText";
+import { EASE } from "@/components/motion/ease";
 
 const timelineEvents: TimelineEvent[] = [
   {
@@ -80,18 +82,13 @@ export default function AboutPage() {
           <div className="absolute top-0 right-0 w-96 h-96 bg-evergreen rounded-full blur-3xl" />
         </div>
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <motion.h1
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="text-5xl md:text-6xl font-bold text-white tracking-tight"
-          >
-            About Us
-          </motion.h1>
+          <h1 className="text-5xl md:text-6xl font-bold text-white tracking-tight">
+            <MaskText text="About Us" />
+          </h1>
           <motion.p
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
+            transition={{ duration: 0.85, delay: 0.2, ease: EASE }}
             className="mt-6 text-xl text-gray-300 max-w-3xl mx-auto"
           >
             A legacy of trust, professionalism, and excellence in global security services since 2000.
@@ -103,10 +100,10 @@ export default function AboutPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <motion.div
-              initial={{ opacity: 0, x: -30 }}
+              initial={{ opacity: 0, x: -56 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
+              transition={{ duration: 0.85, ease: EASE }}
             >
               <h2 className="text-4xl font-bold text-navy tracking-tight mb-6">Our Story</h2>
               <div className="w-20 h-1 mb-6" style={{ backgroundColor: "#2d7a3a" }} />
@@ -124,10 +121,10 @@ export default function AboutPage() {
             </motion.div>
 
             <motion.div
-              initial={{ opacity: 0, x: 30 }}
+              initial={{ opacity: 0, x: 56 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
+              transition={{ duration: 0.85, ease: EASE }}
               className="bg-gray-50 rounded-2xl p-10 border border-gray-100"
             >
               <div className="grid grid-cols-1 gap-8">
@@ -159,10 +156,10 @@ export default function AboutPage() {
             {coreValues.map((value, index) => (
               <motion.div
                 key={value.title}
-                initial={{ opacity: 0, y: 30 }}
+                initial={{ opacity: 0, y: 56 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
+                transition={{ duration: 0.85, delay: index * 0.1, ease: EASE }}
                 className="bg-white rounded-xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100"
               >
                 <h3 className="text-xl font-bold text-evergreen mb-4">{value.title}</h3>
@@ -191,10 +188,10 @@ export default function AboutPage() {
           />
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 40 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
+              transition={{ duration: 0.85, ease: EASE }}
               className="bg-white rounded-xl p-8 shadow-lg border border-gray-100"
             >
               <h3 className="text-xl font-bold text-navy mb-4">Commitment to Safety</h3>
@@ -203,10 +200,10 @@ export default function AboutPage() {
               </p>
             </motion.div>
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 40 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.2 }}
+              transition={{ duration: 0.85, delay: 0.2, ease: EASE }}
               className="bg-white rounded-xl p-8 shadow-lg border border-gray-100"
             >
               <h3 className="text-xl font-bold text-navy mb-4">Commitment to Clients</h3>
