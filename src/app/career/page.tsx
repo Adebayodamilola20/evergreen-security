@@ -16,6 +16,7 @@ export default function CareerPage() {
         eyebrow="Career"
         title="Build a career in security service delivery"
         intro={`${COMPANY.name} offers rewarding and exciting career opportunities to qualified individuals willing to expand their career and views on security.`}
+        image="/assets/bingo2.jpg"
       />
 
       <section className="section-padding bg-white">

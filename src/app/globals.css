@@ -150,3 +150,147 @@ body {
   .curtain-flowchart { top: min(0px, calc(100vh - 1600px)); }
 }
 
+/* On phones the flowchart section is far too tall to pin as well, but the
+   hero alone still gives the curtain read: it holds while the next section
+   climbs over it. */
+@media (max-width: 768px) {
+  .curtain-flow > .curtain-hero {
+    position: sticky;
+    top: 0;
+  }
+}
+
+/* ---- Swipe rows ----
+   A stack of five cards is a long, flat scroll on a phone. Below md the
+   same markup becomes a snap carousel that bleeds off both edges, so the
+   next card peeks in and the section reads as one gesture instead of five
+   screens of text. */
+.swipe-row {
+  display: flex;
+  gap: 1rem;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  margin-inline: -1rem;
+  padding-inline: 1rem;
+  padding-bottom: 0.5rem;
+  scroll-padding-left: 1rem;
+}
+.swipe-row::-webkit-scrollbar {
+  display: none;
+}
+.swipe-row > * {
+  flex: 0 0 84%;
+  min-width: 0;
+  scroll-snap-align: start;
+}
+
+@media (min-width: 768px) {
+  .swipe-row {
+    display: grid;
+    gap: 1.5rem;
+    overflow: visible;
+    margin-inline: 0;
+    padding-inline: 0;
+    padding-bottom: 0;
+  }
+  .swipe-row > * {
+    flex: none;
+  }
+  .swipe-row-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .swipe-row-3 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .swipe-row-4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (min-width: 1024px) {
+  .swipe-row-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .swipe-row-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}
+
+/* "Swipe →" affordance, mobile only. */
+.swipe-hint {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  opacity: 0.45;
+}
+@media (min-width: 768px) {
+  .swipe-hint { display: none; }
+}
+
+/* ---- Marquee ----
+   Twenty-seven services as a bullet list is a wall on a phone. As two
+   counter-drifting rows of chips it becomes the texture of the section. */
+@keyframes marquee-drift {
+  from { transform: translate3d(0, 0, 0); }
+  to { transform: translate3d(-50%, 0, 0); }
+}
+.marquee {
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+}
+.marquee-track {
+  display: flex;
+  width: max-content;
+  gap: 0.6rem;
+  animation: marquee-drift 46s linear infinite;
+  will-change: transform;
+}
+.marquee-track-slow { animation-duration: 64s; }
+.marquee-reverse { animation-direction: reverse; }
+
+/* ---- Decorative textures ---- */
+
+/* Soft coloured light behind dark sections so they are not flat navy. */
+.mesh-navy {
+  background-image:
+    radial-gradient(60% 55% at 12% 0%, hsl(var(--accent) / 0.22), transparent 70%),
+    radial-gradient(50% 50% at 92% 22%, hsl(142 65% 55% / 0.14), transparent 70%),
+    radial-gradient(70% 60% at 50% 108%, hsl(var(--accent) / 0.16), transparent 70%);
+}
+
+/* Same idea on light sections, much gentler. */
+.mesh-light {
+  background-image:
+    radial-gradient(48% 42% at 88% 4%, hsl(var(--accent) / 0.10), transparent 70%),
+    radial-gradient(46% 42% at 4% 96%, hsl(var(--highlight) / 0.08), transparent 70%);
+}
+
+.dot-grid {
+  background-image: radial-gradient(currentColor 1px, transparent 1px);
+  background-size: 22px 22px;
+}
+
+/* Hairline rule that fades out — separates stacked mobile blocks without
+   another hard border. */
+.rule-fade {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, currentColor, transparent);
+  opacity: 0.18;
+}
+
+@keyframes scroll-cue {
+  0%   { transform: translateY(0);     opacity: 0; }
+  35%  { opacity: 1; }
+  100% { transform: translateY(14px);  opacity: 0; }
+}
+.scroll-cue-dot {
+  animation: scroll-cue 1.9s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track,
+  .scroll-cue-dot {
+    animation: none;
+  }
+  .marquee-track {
+    transform: none;
+  }
+}
+

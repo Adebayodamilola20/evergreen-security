@@ -1,7 +1,10 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import PageHero from "@/components/PageHero";
+import Icon, { type IconName } from "@/components/Icons";
 import { WHO_WE_ARE, PILLARS, COMPANY } from "@/lib/company";
+
+const PILLAR_ICONS: IconName[] = ["target", "eye", "compass"];
 
 export const metadata: Metadata = {
   title: "Who We Are",
@@ -16,6 +19,7 @@ export default function WhoWeArePage() {
         eyebrow={COMPANY.legalName}
         title="Who We Are"
         intro="An experience-based, low-risk, best-value and innovative custom security solution organization."
+        image="/assets/bingo6.jpg"
       />
 
       <section className="section-padding bg-white">
@@ -47,12 +51,17 @@ export default function WhoWeArePage() {
 
             <aside className="lg:col-span-4">
               <div className="space-y-4 lg:sticky lg:top-28">
-                {PILLARS.map((pillar) => (
-                  <div key={pillar.title} className="rounded-2xl bg-rail p-6">
-                    <h2 className="mb-3 text-xs font-bold uppercase tracking-[0.18em] text-primary/70">
+                {PILLARS.map((pillar, i) => (
+                  <div key={pillar.title} className="relative overflow-hidden rounded-2xl bg-rail p-6">
+                    <Icon
+                      name={PILLAR_ICONS[i] ?? "target"}
+                      className="absolute -right-3 -top-3 h-20 w-20 text-accent/10"
+                    />
+                    <h2 className="relative mb-3 flex items-center gap-2 text-xs font-bold uppercase tracking-[0.18em] text-primary/70">
+                      <Icon name={PILLAR_ICONS[i] ?? "target"} className="h-4 w-4 text-accent" />
                       {pillar.title}
                     </h2>
-                    <p className="text-sm leading-relaxed text-primary/90">{pillar.body}</p>
+                    <p className="relative text-sm leading-relaxed text-primary/90">{pillar.body}</p>
                   </div>
                 ))}
               </div>
