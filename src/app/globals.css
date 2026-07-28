@@ -181,6 +181,13 @@ body {
 .swipe-row::-webkit-scrollbar {
   display: none;
 }
+/* Set by SwipeRow once it starts drifting itself. Snap points and a
+   per-frame scrollLeft pull against each other, so the row gives up snapping
+   in exchange for the motion; a swipe still coasts naturally. */
+.swipe-row[data-drifting="true"] {
+  scroll-snap-type: none;
+  scroll-behavior: auto;
+}
 .swipe-row > * {
   flex: 0 0 84%;
   min-width: 0;
