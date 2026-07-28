@@ -29,8 +29,8 @@ export default function ContactForm() {
     >
       {submitted ? (
         <div className="text-center py-12">
-          <div className="w-16 h-16 bg-evergreen/10 rounded-full flex items-center justify-center mx-auto mb-6">
-            <svg className="w-8 h-8 text-evergreen" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div className="w-16 h-16 bg-accent/10 rounded-full flex items-center justify-center mx-auto mb-6">
+            <svg className="w-8 h-8 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
             </svg>
           </div>
@@ -48,7 +48,7 @@ export default function ContactForm() {
                 type="text"
                 id="name"
                 required
-                className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-evergreen focus:border-evergreen outline-none transition-colors text-gray-900"
+                className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-accent focus:border-accent outline-none transition-colors text-gray-900"
                 placeholder="John Smith"
               />
             </div>
@@ -60,7 +60,7 @@ export default function ContactForm() {
                 type="email"
                 id="email"
                 required
-                className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-evergreen focus:border-evergreen outline-none transition-colors text-gray-900"
+                className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-accent focus:border-accent outline-none transition-colors text-gray-900"
                 placeholder="john@company.com"
               />
             </div>
@@ -73,8 +73,8 @@ export default function ContactForm() {
             <input
               type="tel"
               id="phone"
-              className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-evergreen focus:border-evergreen outline-none transition-colors text-gray-900"
-              placeholder="+1 (202) 555-0199"
+              className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-accent focus:border-accent outline-none transition-colors text-gray-900"
+              placeholder="301 459 4000"
             />
           </div>
 
@@ -85,7 +85,7 @@ export default function ContactForm() {
              <select
                id="subject"
                required
-               className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-evergreen focus:border-evergreen outline-none transition-colors text-gray-900"
+               className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-accent focus:border-accent outline-none transition-colors text-gray-900"
              >
                <option value="">Select a subject</option>
                {subjectOptions.map((option) => (
@@ -104,15 +104,14 @@ export default function ContactForm() {
               id="message"
               required
               rows={5}
-              className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-evergreen focus:border-evergreen outline-none transition-colors text-gray-900 resize-none"
+              className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-accent focus:border-accent outline-none transition-colors text-gray-900 resize-none"
               placeholder="Tell us about your security needs..."
             />
           </div>
 
           <button
             type="submit"
-            className="w-full py-4 px-6 text-white font-semibold rounded-lg transition-all duration-300 hover:opacity-90 transform hover:scale-[1.02]"
-            style={{ backgroundColor: "#2d7a3a" }}
+            className="w-full py-4 px-6 bg-accent text-white font-semibold rounded-lg transition-all duration-300 hover:opacity-90 transform hover:scale-[1.02]"
           >
             Send Message
           </button>

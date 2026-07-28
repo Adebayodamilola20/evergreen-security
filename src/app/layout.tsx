@@ -3,8 +3,9 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import IntroExperience from "@/components/IntroExperience";
+import VoiceWelcome from "@/components/VoiceWelcome";
 import SmoothScroll from "@/components/SmoothScroll";
+import { COMPANY } from "@/lib/company";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -17,11 +18,13 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Evergreen Protective Services International | Professional Security Solutions",
-  description:
-    "Evergreen Protective Services International delivers professional security solutions, risk management, patrol services, corporate protection, and operational excellence across multiple regions worldwide.",
+  title: {
+    default: `${COMPANY.name} | ${COMPANY.legalName}`,
+    template: `%s | ${COMPANY.name}`,
+  },
+  description: COMPANY.description,
   keywords:
-    "security company, protective services, corporate security, executive protection, airport security, risk management, international security",
+    "security company, armed security guards, unarmed security guards, security training academy, DC SPO, VA DCJS, executive protection, mobile patrol, CCTV monitoring, Lanham Maryland, DMV security",
 };
 
 export default function RootLayout({
@@ -33,11 +36,10 @@ export default function RootLayout({
     <html lang="en" className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}>
       <body className="min-h-full flex flex-col">
         <SmoothScroll />
-        <IntroExperience>
-          <Header />
-          <main className="flex-1">{children}</main>
-          <Footer />
-        </IntroExperience>
+        <Header />
+        <main className="flex-1">{children}</main>
+        <Footer />
+        <VoiceWelcome />
       </body>
     </html>
   );

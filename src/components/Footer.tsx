@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { COMPANY, HQ, MENU_ICONS, SERVICES } from "@/lib/company";
 
 export default function Footer() {
   return (
@@ -7,81 +8,30 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
           <div>
             <div className="flex items-center gap-3 mb-6">
-              <div className="w-10 h-10 rounded-lg flex items-center justify-center" style={{ backgroundColor: "#2d7a3a" }}>
-                <span className="text-white font-bold text-lg">E</span>
-              </div>
-              <div>
-                <p className="text-lg font-bold">Evergreen</p>
-                <p className="text-sm text-gray-400 -mt-1">Protective Services</p>
+              <span className="w-11 h-11 rounded-lg bg-accent flex items-center justify-center shrink-0">
+                <span className="text-white font-bold text-sm tracking-tight">PGS</span>
+              </span>
+              <div className="leading-tight">
+                <p className="text-lg font-bold">{COMPANY.name}</p>
+                <p className="text-xs text-gray-400">{COMPANY.legalName}</p>
               </div>
             </div>
             <p className="text-gray-400 text-sm leading-relaxed">
-              Delivering professional security solutions, risk management, and operational excellence worldwide. Protecting people, assets, and operations across multiple regions.
+              A spectrum of custom solutions to match clients&apos; dynamic and peculiar security needs — armed and
+              unarmed officers, security consulting, and an A-rated training academy.
             </p>
-               <div className="flex gap-4 mt-6">
-                {[
-                  { name: "linkedin" },
-                  { name: "twitter" },
-                  { name: "facebook" },
-                ].map((social) => (
-                 <a
-                   key={social.name}
-                   href="#"
-                   className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-evergreen transition-colors duration-300"
-                   aria-label={social.name}
-                 >
-                   <span className="text-xs uppercase font-bold">{social.name[0]}</span>
-                 </a>
-               ))}
-             </div>
           </div>
 
           <div>
-            <h3 className="text-lg font-semibold mb-6">Quick Links</h3>
-             <ul className="space-y-3">
-               {[
-                 { label: "Home", href: "/" },
-                 { label: "About Us", href: "/about" },
-                 { label: "Services", href: "/services" },
-                 { label: "Training", href: "/training" },
-                 { label: "Gallery", href: "/gallery" },
-                 { label: "Executive Staff", href: "/executive-staff" },
-                 { label: "Careers", href: "/careers" },
-                 { label: "Employment", href: "/employment" },
-                 { label: "Quality Assurance", href: "/quality-assurance" },
-                 { label: "Contact Us", href: "/contact" },
-               ].map((link) => (
-                 <li key={link.href}>
-                   <Link
-                     href={link.href}
-                     className="text-gray-400 hover:text-evergreen transition-colors duration-200 text-sm"
-                   >
-                     {link.label}
-                   </Link>
-                 </li>
-               ))}
-             </ul>
-          </div>
-
-          <div>
-            <h3 className="text-lg font-semibold mb-6">Services</h3>
+            <h3 className="text-lg font-semibold mb-6">Menu</h3>
             <ul className="space-y-3">
-              {[
-                "Security Guard Services",
-                "Armed Security Services",
-                "Executive Protection",
-                "Airport Security",
-                "CCTV Monitoring",
-                "Access Control",
-                "Risk Assessment",
-                "Counter Terrorism Support",
-              ].map((service) => (
-                <li key={service}>
+              {MENU_ICONS.map((link) => (
+                <li key={link.href}>
                   <Link
-                    href="/services"
-                    className="text-gray-400 hover:text-evergreen transition-colors duration-200 text-sm"
+                    href={link.href}
+                    className="text-gray-400 hover:text-brand-light transition-colors duration-200 text-sm"
                   >
-                    {service}
+                    {link.label}
                   </Link>
                 </li>
               ))}
@@ -89,44 +39,54 @@ export default function Footer() {
           </div>
 
           <div>
+            <h3 className="text-lg font-semibold mb-6">Services</h3>
+            <ul className="space-y-2.5">
+              {SERVICES.slice(0, 10).map((service) => (
+                <li key={service} className="text-gray-400 text-sm">
+                  {service}
+                </li>
+              ))}
+              <li>
+                <Link href="/#services" className="text-brand-light hover:text-white text-sm font-semibold">
+                  See all {SERVICES.length} services →
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          <div>
             <h3 className="text-lg font-semibold mb-6">Contact</h3>
             <div className="space-y-4 text-sm text-gray-400">
               <div>
-                <p className="text-white font-medium mb-1">Corporate Headquarters</p>
-                <p>123 Security Drive, Suite 100</p>
-                <p>Washington, DC 20001</p>
-                <p>United States</p>
+                <p className="text-white font-medium mb-1">{HQ.label}</p>
+                {HQ.lines.map((line) => (
+                  <p key={line}>{line}</p>
+                ))}
               </div>
               <div>
                 <p className="text-white font-medium mb-1">Phone</p>
-                <p>+1 (202) 555-0199</p>
+                <a href={`tel:${HQ.phone.replace(/\s/g, "")}`} className="hover:text-brand-light transition-colors">
+                  {HQ.phone}
+                </a>
+              </div>
+              <div>
+                <p className="text-white font-medium mb-1">Fax</p>
+                <p>{HQ.fax}</p>
               </div>
               <div>
                 <p className="text-white font-medium mb-1">Email</p>
-                <p>info@evergreenprotective.com</p>
-              </div>
-              <div>
-                <p className="text-white font-medium mb-1">Emergency</p>
-                <p>+1 (202) 555-0110</p>
+                <a href={`mailto:${HQ.email}`} className="hover:text-brand-light transition-colors break-all">
+                  {HQ.email}
+                </a>
               </div>
             </div>
           </div>
         </div>
 
         <div className="border-t border-white/10 mt-12 pt-8">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-            <p className="text-gray-400 text-sm">
-              &copy; {new Date().getFullYear()} Evergreen Protective Services International. All rights reserved.
-            </p>
-            <div className="flex gap-6">
-              <Link href="#" className="text-gray-400 hover:text-evergreen text-sm transition-colors duration-200">
-                Privacy Policy
-              </Link>
-              <Link href="#" className="text-gray-400 hover:text-evergreen text-sm transition-colors duration-200">
-                Terms & Conditions
-              </Link>
-            </div>
-          </div>
+          <p className="text-gray-400 text-sm text-center md:text-left">
+            &copy; {new Date().getFullYear()} {COMPANY.legalName} All rights reserved.
+          </p>
         </div>
       </div>
     </footer>
