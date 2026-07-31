@@ -161,63 +161,95 @@ body {
 }
 
 /* ---- Swipe rows ----
-   A stack of five cards is a long, flat scroll on a phone. Below md the
-   same markup becomes a snap carousel that bleeds off both edges, so the
-   next card peeks in and the section reads as one gesture instead of five
-   screens of text. */
+   A stack of cards is a long, flat scroll on a phone. Below md the same
+   markup becomes a slow self-driving marquee: the cards drift right-to-left
+   on their own so the section reads as one moving band instead of several
+   screens of text. The motion is a GPU transform on a track that carries two
+   identical copies of the cards (translating -50% loops seamlessly), and the
+   outer element clips with overflow:hidden — NOT a native side-scroller — so
+   it never jitters and never captures the page's vertical scroll. */
+@keyframes swipe-drift {
+  from { transform: translate3d(0, 0, 0); }
+  to { transform: translate3d(-50%, 0, 0); }
+}
 .swipe-row {
-  display: flex;
-  gap: 1rem;
-  overflow-x: auto;
-  overscroll-behavior-x: contain;
-  scroll-snap-type: x mandatory;
-  -webkit-overflow-scrolling: touch;
-  scrollbar-width: none;
+  overflow: hidden;
   margin-inline: -1rem;
-  padding-inline: 1rem;
-  padding-bottom: 0.5rem;
-  scroll-padding-left: 1rem;
+  /* Room so overflow:hidden doesn't crop card shadows top/bottom. */
+  padding-block: 0.5rem;
+  /* A vertical-only touch-action guarantees swipes over the row scroll the
+     page rather than being swallowed by the row. */
+  touch-action: pan-y;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
 }
-.swipe-row::-webkit-scrollbar {
-  display: none;
+.swipe-row__track {
+  display: flex;
+  width: max-content;
+  animation: swipe-drift var(--drift-duration, 40s) linear infinite;
+  will-change: transform;
 }
-/* Set by SwipeRow once it starts drifting itself. Snap points and a
-   per-frame scrollLeft pull against each other, so the row gives up snapping
-   in exchange for the motion; a swipe still coasts naturally. */
-.swipe-row[data-drifting="true"] {
-  scroll-snap-type: none;
-  scroll-behavior: auto;
+.swipe-row__set {
+  display: flex;
 }
-.swipe-row > * {
-  flex: 0 0 84%;
+.swipe-row__set > * {
+  flex: 0 0 82vw;
   min-width: 0;
-  scroll-snap-align: start;
+  margin-right: 1rem;
 }
 
 @media (min-width: 768px) {
+  /* Desktop is a plain grid, exactly as before — no motion, no clone. */
   .swipe-row {
-    display: grid;
-    gap: 1.5rem;
     overflow: visible;
     margin-inline: 0;
-    padding-inline: 0;
-    padding-bottom: 0;
+    padding-block: 0;
+    touch-action: auto;
+    -webkit-mask-image: none;
+    mask-image: none;
   }
-  .swipe-row > * {
-    flex: none;
+  .swipe-row__track {
+    display: block;
+    width: auto;
+    animation: none;
   }
-  .swipe-row-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .swipe-row-3 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .swipe-row-4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .swipe-row__clone {
+    display: none;
+  }
+  .swipe-row__set {
+    display: grid;
+    gap: 1.5rem;
+  }
+  .swipe-row__set > * {
+    margin-right: 0;
+  }
+  .swipe-row-2 .swipe-row__set { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .swipe-row-3 .swipe-row__set { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .swipe-row-4 .swipe-row__set { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 @media (min-width: 1024px) {
-  .swipe-row-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-  .swipe-row-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .swipe-row-3 .swipe-row__set { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .swipe-row-4 .swipe-row__set { grid-template-columns: repeat(4, minmax(0, 1fr)); }
 }
 
-/* "Swipe →" affordance, mobile only. */
+/* Reduced motion on a phone: no auto-drift. Fall back to a normal manual
+   horizontal swipe so every card is still reachable. */
+@media (max-width: 767px) and (prefers-reduced-motion: reduce) {
+  .swipe-row {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    touch-action: pan-x pan-y;
+  }
+  .swipe-row::-webkit-scrollbar { display: none; }
+  .swipe-row__track { animation: none; }
+  .swipe-row__clone { display: none; }
+}
+
+/* Auto-scroll affordance. Hidden by default (the rows move on their own);
+   shown only on a phone when motion is reduced and swiping is the interaction. */
 .swipe-hint {
-  display: flex;
+  display: none;
   align-items: center;
   gap: 0.4rem;
   font-size: 0.7rem;
@@ -226,8 +258,8 @@ body {
   text-transform: uppercase;
   opacity: 0.45;
 }
-@media (min-width: 768px) {
-  .swipe-hint { display: none; }
+@media (max-width: 767px) and (prefers-reduced-motion: reduce) {
+  .swipe-hint { display: flex; }
 }
 
 /* ---- Marquee ----
