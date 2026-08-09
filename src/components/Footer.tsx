@@ -35,6 +35,22 @@ export default function Footer() {
                   </Link>
                 </li>
               ))}
+              <li>
+                <Link
+                  href="/who-we-are/leadership"
+                  className="text-gray-400 hover:text-brand-light transition-colors duration-200 text-sm"
+                >
+                  Leadership
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/gallery"
+                  className="text-gray-400 hover:text-brand-light transition-colors duration-200 text-sm"
+                >
+                  Gallery
+                </Link>
+              </li>
             </ul>
           </div>
 

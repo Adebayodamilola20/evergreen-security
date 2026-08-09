@@ -14,7 +14,10 @@ const navLinks: NavLink[] = [
   {
     label: "Who We Are",
     href: "/who-we-are",
-    children: [{ label: "Management", href: "/who-we-are/management" }],
+    children: [
+      { label: "Leadership", href: "/who-we-are/leadership" },
+      { label: "Management", href: "/who-we-are/management" },
+    ],
   },
   {
     label: "Training Academy",
@@ -27,6 +30,7 @@ const navLinks: NavLink[] = [
     ],
   },
   { label: "Career", href: "/career" },
+  { label: "Gallery", href: "/gallery" },
   { label: "Contact Us", href: "/contact" },
 ];
 

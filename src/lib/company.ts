@@ -545,3 +545,85 @@ export const CAREER_REQUIREMENTS: string[] = [
 
 /** Path the downloadable application PDF will be served from once supplied. */
 export const APPLICATION_PDF = "/forms/pgs-employment-application.pdf";
+
+// ---------------------------------------------------------------------------
+// Leadership / Team
+// ---------------------------------------------------------------------------
+
+export interface Leader {
+  /** Real name — set once the client confirms it; until then the role is the headline. */
+  name?: string;
+  /** Title, kept accurate to how the company describes its own structure. */
+  role: string;
+  /** 2–3 letter monogram shown in the avatar until a photo is supplied. */
+  tag: string;
+  /** A line or two on what this role owns at PGS. */
+  focus: string;
+  /** Optional headshot under /public. When set, it replaces the monogram. */
+  photo?: string;
+}
+
+// Roles are drawn from the company's own copy — veteran-led management, an
+// operations manager working with regional/area managers, a Director of Human
+// Resources, the Training Academy, and the Business Development & Quality
+// Assurance departments. Names and photographs are dropped in as the client
+// supplies them; every card renders a photo the moment `photo` is set.
+export const LEADERSHIP: Leader[] = [
+  {
+    role: "President & Chief Executive Officer",
+    tag: "CEO",
+    focus:
+      "Sets the company's direction and carries the veteran, security-technocrat experience PGS is built on — many combined years across military, law enforcement and security services.",
+  },
+  {
+    role: "Chief Operating Officer",
+    tag: "COO",
+    focus:
+      "Runs day-to-day operations across every contract, working with the regional and area managers to hold the same standard on each site, every shift.",
+  },
+  {
+    role: "Director of Human Resources",
+    tag: "HR",
+    focus:
+      "Leads recruitment and the fair, comprehensive review of every applicant — the equal-opportunity, promote-from-within culture PGS commits to.",
+  },
+  {
+    role: "Director, PGS Training Academy",
+    tag: "TA",
+    focus:
+      "Oversees the A-rated academy (PGSTA) that trains our own officers and serves as a feeder academy for the wider DMV security industry.",
+  },
+  {
+    role: "Director of Business Development & Quality Assurance",
+    tag: "QA",
+    focus:
+      "Owns the feedback loop and quality control behind 100% contract compliance — independent assessment, on-site evaluation and client satisfaction.",
+  },
+];
+
+/** Intro line for the Leadership page. */
+export const LEADERSHIP_INTRO =
+  "PGS is led by a management team of veterans and seasoned security technocrats, business and administrative professionals — with many combined years across military, law enforcement and security services, in government agencies and corporate organizations alike.";
+
+// ---------------------------------------------------------------------------
+// Gallery
+// ---------------------------------------------------------------------------
+
+export interface GalleryItem {
+  src: string;
+  caption: string;
+}
+
+// A curated set of the company's own photographs — officers on post, on patrol
+// and in training. Captions are kept general and accurate to what each frame
+// shows. Drop new photos into /public/assets and add them here to extend it.
+export const GALLERY: GalleryItem[] = [
+  { src: "/assets/bingo6.jpg", caption: "On post at a residential property" },
+  { src: "/assets/bingi3.jpg", caption: "Continuous training at the academy" },
+  { src: "/assets/bingo2.jpg", caption: "Access control at a commercial venue" },
+  { src: "/assets/bingo.jpg", caption: "Mobile patrol" },
+  { src: "/assets/bingi5.jpg", caption: "Formation and inspection" },
+  { src: "/assets/bingo4.jpg", caption: "Officers on assignment" },
+  { src: "/assets/bingi.jpg", caption: "Classroom instruction in session" },
+  { src: "/assets/jonney .jpg", caption: "Muster and briefing" },
+];

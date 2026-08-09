@@ -4,30 +4,30 @@
   --background: #ffffff;
   --foreground: #171717;
 
-  /* PGS brand colors (HSL values) */
-  --primary: 142 70% 12%;
+  /* PGS brand colors (HSL values) — deep navy blue (#0A2540 ≈ 210 73% 15%). */
+  --primary: 210 73% 15%;
   --primary-foreground: 0 0% 100%;
-  --accent: 142 65% 42%;
+  --accent: 210 80% 48%;
   --accent-foreground: 0 0% 100%;
-  --highlight: 128 27% 16%;
+  --highlight: 212 55% 26%;
   --highlight-foreground: 0 0% 100%;
-  --border: 142 15% 88%;
+  --border: 212 20% 88%;
   --radius: 0.5rem;
 
   /* The flowchart calls for the services rail and the mission/vision rail to
      sit at a "much lower color temperature" than the solid home page. */
-  --rail: 142 24% 93%;
-  --rail-deep: 142 30% 88%;
+  --rail: 212 30% 94%;
+  --rail-deep: 212 32% 90%;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-navy: hsl(var(--primary));
-  --color-navy-light: hsl(142 70% 20%);
-  --color-brand: hsl(142 70% 30%);
-  --color-brand-light: hsl(142 65% 50%);
-  --color-brand-dark: hsl(142 70% 8%);
+  --color-navy-light: hsl(210 72% 23%);
+  --color-brand: hsl(210 74% 34%);
+  --color-brand-light: hsl(210 80% 55%);
+  --color-brand-dark: hsl(212 76% 10%);
   --color-rail: hsl(var(--rail));
   --color-rail-deep: hsl(var(--rail-deep));
   --color-primary: hsl(var(--primary));
@@ -290,7 +290,7 @@ body {
 .mesh-navy {
   background-image:
     radial-gradient(60% 55% at 12% 0%, hsl(var(--accent) / 0.22), transparent 70%),
-    radial-gradient(50% 50% at 92% 22%, hsl(142 65% 55% / 0.14), transparent 70%),
+    radial-gradient(50% 50% at 92% 22%, hsl(210 80% 55% / 0.14), transparent 70%),
     radial-gradient(70% 60% at 50% 108%, hsl(var(--accent) / 0.16), transparent 70%);
 }
 
