@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import { motion, useScroll, useTransform } from "framer-motion";
 import MaskText from "@/components/motion/MaskText";
@@ -22,11 +23,25 @@ import {
   ACADEMY,
 } from "@/lib/company";
 
-const HERO_LINES = ["Protecting life,", "assets and facilities", "in an evolving world."];
+const HERO_LINES = ["Security the DMV trusts,", "with its people and property."];
 
-// Short, all doc-supported, and the only thing on the hero that survives at
-// phone width once the headline has had its say.
-const HERO_CHIPS = ["Armed & unarmed officers", "A-rated training academy", "24/7 response", "DMV area"];
+// A designed credibility bar (replaces the old pill chips). Every value is
+// supported by the company document: veteran-led leadership, the A-rated
+// academy, the 24/7 response team, and the DC/MD/VA footprint.
+const HERO_STATS = [
+  { label: "Leadership", value: "Veteran-led" },
+  { label: "Training", value: "A-rated academy" },
+  { label: "Response", value: "24/7" },
+  { label: "Coverage", value: "DC · MD · VA" },
+];
+
+// For the split design (Design 3) — every line supported by the company document.
+const HERO_PROOF = [
+  "Veteran-led leadership — military, law enforcement & security",
+  "Custom Protection Officers® — armed & unarmed",
+  "An A-rated academy trains every officer we deploy",
+  "24/7 escalation & response team",
+];
 
 // Cards led with "01 / 02 / 03" before, which is invisible design on a phone.
 const CAPABILITY_ICONS: IconName[] = ["officer", "camera", "clipboard", "scan"];
@@ -40,6 +55,203 @@ const PILLAR_ICONS: IconName[] = ["target", "eye", "compass"];
 const SERVICES_ROW_A = SERVICES.filter((_, i) => i % 2 === 0);
 const SERVICES_ROW_B = SERVICES.filter((_, i) => i % 2 === 1);
 
+// ---- Hero building blocks (shared across the three design variants) ----
+
+function HeroEyebrow({ centered = false }: { centered?: boolean }) {
+  return (
+    <p
+      className={`mb-5 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs font-semibold uppercase tracking-[0.2em] text-white/75 sm:text-sm ${
+        centered ? "justify-center" : ""
+      }`}
+    >
+      <span className="flex items-center gap-2.5">
+        <span className="h-px w-8 bg-accent" />
+        {COMPANY.legalName}
+      </span>
+      <span className="text-white/50">DC · Maryland · Virginia</span>
+    </p>
+  );
+}
+
+function HeroHeadline({ centered = false }: { centered?: boolean }) {
+  return (
+    <h1
+      className={`mb-6 text-4xl font-bold leading-[1.05] tracking-tight sm:text-5xl md:text-7xl ${
+        centered ? "mx-auto max-w-4xl" : "max-w-3xl"
+      }`}
+    >
+      {HERO_LINES.map((line, i) => (
+        <span key={line} className="block overflow-hidden pb-1">
+          <motion.span
+            className="block"
+            initial={{ y: "110%", clipPath: "inset(0% 0% 100% 0%)" }}
+            animate={{ y: 0, clipPath: "inset(0% 0% -25% 0%)" }}
+            transition={{ duration: 0.9, delay: 0.35 + i * 0.13, ease: EASE }}
+          >
+            {i === HERO_LINES.length - 1 ? (
+              <>
+                with its <span className="text-brand-light">people and property.</span>
+              </>
+            ) : (
+              line
+            )}
+          </motion.span>
+        </span>
+      ))}
+    </h1>
+  );
+}
+
+function HeroSubhead({ centered = false }: { centered?: boolean }) {
+  return (
+    <motion.p
+      initial={{ opacity: 0, y: 24 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.9, delay: 0.85, ease: EASE }}
+      className={`mb-8 max-w-2xl text-lg leading-relaxed text-white/90 md:text-2xl ${
+        centered ? "mx-auto" : ""
+      }`}
+    >
+      {COMPANY.shortName}, Inc. is a veteran-led security company protecting life, assets and
+      facilities across the DMV — hand-picked armed and unarmed officers, our own A-rated academy,
+      and a team that never stops watching.
+    </motion.p>
+  );
+}
+
+function HeroCtas({ centered = false }: { centered?: boolean }) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 16 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.7, delay: 1.0, ease: EASE }}
+      className={`flex flex-col gap-3.5 sm:flex-row ${centered ? "sm:justify-center" : ""}`}
+    >
+      <Link
+        href="/contact"
+        className="inline-flex items-center justify-center rounded-full bg-white px-8 py-4 text-lg font-bold text-navy transition-all duration-300 hover:scale-105 hover:bg-white/90"
+      >
+        Request a security assessment
+      </Link>
+      <Link
+        href="/training-academy"
+        className="inline-flex items-center justify-center rounded-full border-2 border-white/30 px-8 py-4 text-base font-semibold text-white backdrop-blur-sm transition-all duration-300 hover:scale-105 hover:border-white hover:bg-white hover:text-navy sm:text-lg"
+      >
+        Visit the academy
+      </Link>
+    </motion.div>
+  );
+}
+
+function HeroStatsBar({ centered = false }: { centered?: boolean }) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 16 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.7, delay: 1.15, ease: EASE }}
+      className={
+        centered
+          ? "mt-10 flex flex-wrap justify-center gap-x-10 gap-y-5 border-t border-white/15 pt-7"
+          : "mt-10 grid max-w-2xl grid-cols-2 gap-x-8 gap-y-5 border-t border-white/15 pt-7 sm:grid-cols-4"
+      }
+    >
+      {HERO_STATS.map((stat) => (
+        <div key={stat.label} className={centered ? "text-center" : ""}>
+          <p className="text-[0.7rem] font-semibold uppercase tracking-wider text-brand-light/90">
+            {stat.label}
+          </p>
+          <p className="mt-1 text-base font-semibold text-white sm:text-lg">{stat.value}</p>
+        </div>
+      ))}
+    </motion.div>
+  );
+}
+
+// Design 1 — Left-aligned narrative + credibility bar.
+function HeroDesign1() {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 40 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.8, ease: EASE }}
+      className="max-w-4xl"
+    >
+      <HeroEyebrow />
+      <HeroHeadline />
+      <HeroSubhead />
+      <HeroCtas />
+      <HeroStatsBar />
+    </motion.div>
+  );
+}
+
+// Design 2 — Centered poster.
+function HeroDesign2() {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 40 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.8, ease: EASE }}
+      className="mx-auto max-w-4xl text-center"
+    >
+      <HeroEyebrow centered />
+      <HeroHeadline centered />
+      <HeroSubhead centered />
+      <HeroCtas centered />
+      <HeroStatsBar centered />
+    </motion.div>
+  );
+}
+
+// Design 3 — Split: narrative on the left, a "why PGS" proof card on the right.
+function HeroDesign3() {
+  return (
+    <div className="grid items-center gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:gap-14">
+      <motion.div
+        initial={{ opacity: 0, y: 40 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, ease: EASE }}
+      >
+        <HeroEyebrow />
+        <HeroHeadline />
+        <HeroSubhead />
+        <HeroCtas />
+      </motion.div>
+      <motion.div
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, delay: 0.35, ease: EASE }}
+        className="rounded-2xl border border-white/15 bg-white/[0.07] p-6 backdrop-blur-md sm:p-8"
+      >
+        <p className="mb-5 text-sm font-semibold uppercase tracking-[0.18em] text-brand-light">
+          Why organizations choose PGS
+        </p>
+        <ul className="space-y-4">
+          {HERO_PROOF.map((item) => (
+            <li
+              key={item}
+              className="flex items-start gap-3 text-[0.95rem] leading-snug text-white/90"
+            >
+              <span className="mt-0.5 flex h-5 w-5 flex-none items-center justify-center rounded-full bg-accent/20 text-brand-light">
+                <svg viewBox="0 0 20 20" fill="none" className="h-3 w-3" aria-hidden="true">
+                  <path
+                    d="M4 10.5l4 4 8-9"
+                    stroke="currentColor"
+                    strokeWidth="2.4"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              </span>
+              <span>{item}</span>
+            </li>
+          ))}
+        </ul>
+      </motion.div>
+    </div>
+  );
+}
+
 export default function Home() {
   // As the flowchart section rises over the pinned hero, the background drifts
   // down while the copy lifts away — the hero recedes instead of just sitting.
@@ -49,8 +261,32 @@ export default function Home() {
   const heroContentY = useTransform(scrollY, [0, 700], [0, -110]);
   const heroContentOpacity = useTransform(scrollY, [100, 650], [1, 0]);
 
+  // TEMP: lets you preview 3 hero designs on the page and pick one.
+  const [design, setDesign] = useState(1);
+
   return (
     <div className="min-h-screen bg-gray-50">
+      {/* TEMP preview control — pick a hero design; I remove this once you choose. */}
+      <div className="fixed bottom-5 left-1/2 z-[60] -translate-x-1/2">
+        <div className="flex items-center gap-1 rounded-full border border-white/15 bg-navy/95 p-1.5 shadow-2xl backdrop-blur">
+          <span className="px-2 text-xs font-medium text-white/60">Hero design</span>
+          {[1, 2, 3].map((n) => (
+            <button
+              key={n}
+              type="button"
+              onClick={() => setDesign(n)}
+              className={
+                design === n
+                  ? "h-8 w-8 rounded-full bg-white text-sm font-bold text-navy"
+                  : "h-8 w-8 rounded-full text-sm font-semibold text-white/70 transition-colors hover:bg-white/10 hover:text-white"
+              }
+            >
+              {n}
+            </button>
+          ))}
+        </div>
+      </div>
+
       <div className="curtain-flow">
         {/* Hero */}
         <section className="curtain-pin curtain-hero relative flex min-h-[92vh] items-center overflow-hidden py-20 md:min-h-screen md:py-0">
@@ -66,10 +302,12 @@ export default function Home() {
                 transition={{ duration: 7, ease: "easeOut" }}
               />
             </motion.div>
-            {/* Directional wash rather than a flat scrim — keeps the photo
-                readable on a small screen while the copy stays legible. */}
-            <div className="absolute inset-0 z-10 bg-gradient-to-br from-navy/95 via-navy/75 to-brand-dark/90" />
-            <div className="mesh-navy absolute inset-0 z-10" />
+            {/* Directional wash: dark & readable on the LEFT where the copy sits,
+                clearing toward the right so the officers in the photo show through
+                (the old flat scrim buried the picture). */}
+            <div className="absolute inset-0 z-10 bg-gradient-to-r from-navy/95 via-navy/75 to-navy/20" />
+            <div className="absolute inset-0 z-10 bg-gradient-to-t from-navy/70 via-transparent to-navy/25" />
+            <div className="mesh-navy absolute inset-0 z-10 opacity-70" />
             <div className="absolute inset-x-0 bottom-0 z-10 h-40 bg-gradient-to-t from-navy to-transparent" />
           </div>
 
@@ -77,70 +315,9 @@ export default function Home() {
             className="container-custom relative z-10 mt-16 px-4 text-white sm:px-6 md:mt-24 lg:px-8"
             style={{ y: heroContentY, opacity: heroContentOpacity }}
           >
-            <motion.div
-              initial={{ opacity: 0, y: 40 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, ease: EASE }}
-              className="max-w-4xl"
-            >
-              <p className="mb-5 flex items-center gap-2.5 text-xs font-semibold uppercase tracking-[0.2em] text-white/70 sm:text-sm">
-                <span className="h-px w-8 bg-accent" />
-                {COMPANY.legalName}
-              </p>
-              <h1 className="mb-6 max-w-3xl text-4xl font-bold leading-tight tracking-tight sm:text-5xl md:text-7xl">
-                {HERO_LINES.map((line, i) => (
-                  <span key={line} className="block overflow-hidden pb-1">
-                    <motion.span
-                      className="block"
-                      initial={{ y: "110%", clipPath: "inset(0% 0% 100% 0%)" }}
-                      animate={{ y: 0, clipPath: "inset(0% 0% -25% 0%)" }}
-                      transition={{ duration: 0.9, delay: 0.35 + i * 0.13, ease: EASE }}
-                    >
-                      {line}
-                    </motion.span>
-                  </span>
-                ))}
-              </h1>
-              <motion.p
-                initial={{ opacity: 0, y: 24 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.9, delay: 0.85, ease: EASE }}
-                className="mb-8 max-w-2xl text-lg leading-relaxed text-white/90 md:text-2xl"
-              >
-                A spectrum of custom solutions matched to your dynamic and peculiar security needs — deploying the best
-                of officers, armed and unarmed, and the technology behind them.
-              </motion.p>
-
-              <div className="mb-9 flex flex-wrap gap-2">
-                {HERO_CHIPS.map((chip, i) => (
-                  <motion.span
-                    key={chip}
-                    initial={{ opacity: 0, y: 14 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6, delay: 1 + i * 0.08, ease: EASE }}
-                    className="inline-flex items-center gap-1.5 rounded-full border border-white/20 bg-white/10 px-3.5 py-1.5 text-xs font-medium text-white/90 backdrop-blur-sm sm:text-sm"
-                  >
-                    <span className="h-1.5 w-1.5 rounded-full bg-accent" />
-                    {chip}
-                  </motion.span>
-                ))}
-              </div>
-
-              <div className="flex flex-col gap-3.5 sm:flex-row">
-                <Link
-                  href="/contact"
-                  className="inline-flex items-center justify-center rounded-full bg-white px-8 py-4 text-lg font-bold text-navy transition-all duration-300 hover:scale-105 hover:bg-white/90"
-                >
-                  Contact Us
-                </Link>
-                <Link
-                  href="/training-academy"
-                  className="inline-flex items-center justify-center rounded-full border-2 border-white/30 px-8 py-4 text-base font-semibold text-white backdrop-blur-sm transition-all duration-300 hover:scale-105 hover:border-white hover:bg-white hover:text-navy sm:text-lg"
-                >
-                  Training Academy
-                </Link>
-              </div>
-            </motion.div>
+            {design === 1 && <HeroDesign1 />}
+            {design === 2 && <HeroDesign2 />}
+            {design === 3 && <HeroDesign3 />}
           </motion.div>
 
           {/* Scroll cue — the curtain effect below is easy to miss otherwise. */}

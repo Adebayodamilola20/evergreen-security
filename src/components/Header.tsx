@@ -12,7 +12,7 @@ import { COMPANY, guardCourses, firearmCourses } from "@/lib/company";
 // its own sub-site, so its own menu boxes are mirrored here as a drop-down.
 const navLinks: NavLink[] = [
   {
-    label: "Who We Are",
+    label: "About Us",
     href: "/who-we-are",
     children: [
       { label: "Leadership", href: "/who-we-are/leadership" },
